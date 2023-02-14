@@ -1,0 +1,15 @@
+{% extends 'base_modale.html.twig' %}
+
+{% block title %}Edit Account{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <div class="modal-body">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            {{ form_end(form.submit) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

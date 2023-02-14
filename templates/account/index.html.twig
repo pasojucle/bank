@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comptes{% endblock %}
+
+{% block body %}
+    <h1>Comptes</h1>
+    <a href="{{ path('account_new') }}" class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un compte</a>
+
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for account in accounts %}
+            <tr>
+                <td>{{ account.name }}</td>
+                <td>
+                    <a href="{{ path('account_edit', {'id': account.id}) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun comptes</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
