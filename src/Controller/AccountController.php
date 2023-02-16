@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Account;
+use App\Entity\User;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/account')]
 class AccountController extends AbstractController
@@ -72,7 +72,7 @@ class AccountController extends AbstractController
     #[Route('/{id}/delete', name: 'account_delete', methods: ['POST'])]
     public function delete(Request $request, Account $account, AccountRepository $accountRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$account->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $account->getId(), $request->request->get('_token'))) {
             $accountRepository->remove($account, true);
         }
 

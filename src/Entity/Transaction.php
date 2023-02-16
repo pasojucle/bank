@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\TransactionRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\TransactionRepository;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction

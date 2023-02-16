@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('[data-bs-toggle="modal-dynamic"]').forEach(element => {
-        console.log('element', element);
-        element.addEventListener('click', loadModal);
-    })
+    initModal();
 });
 
+const initModal = () => {
+    console.log('modal-dynamic', document.querySelectorAll('[data-bs-toggle="modal-dynamic"]'));
+    document.querySelectorAll('[data-bs-toggle="modal-dynamic"]').forEach(element => element.addEventListener('click', loadModal));
+}
+
 const loadModal = (event) => {
+    console.log('Modale - loadModal')
     event.preventDefault();
     const route = event.target.href;
     fetch(route, {
@@ -21,3 +24,5 @@ const loadModal = (event) => {
         modal.show();
     })
 }
+
+export { loadModal }

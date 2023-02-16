@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
     }
 
 
-    #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
         $form = $this->createForm(CategoryType::class, $category, [
@@ -54,7 +54,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
 
-            return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
+            return new Response();
         }
 
         return $this->render('modal/form.html.twig', [
@@ -66,7 +67,7 @@ class CategoryController extends AbstractController
     #[Route('/{id}', name: 'category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $categoryRepository->remove($category, true);
         }
 

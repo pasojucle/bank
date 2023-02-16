@@ -5,6 +5,7 @@ const Encore = require('@symfony/webpack-encore');
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
+const FosRouting = require('fos-router/webpack/FosRouting');
 
 Encore
     // directory where compiled assets will be stored
@@ -60,7 +61,8 @@ Encore
     .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
+    .enableVueLoader(() => {}, { runtimeCompilerBuild: false })
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -74,6 +76,7 @@ Encore
     .autoProvideVariables({
         bootstrap: 'bootstrap',
     })
+    .addPlugin(new FosRouting())
 ;
 
 module.exports = Encore.getWebpackConfig();
