@@ -1,7 +1,7 @@
 <template>
-    <tr v-for="category in categoryList">
+    <tr v-for="category in store.list.categories" :key="category.id">
         <td>{{ category.name }}</td>
-        <td><a v-bind:href="path(category)" v-on:click="loadModal" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
+        <td><a v-bind:href="path(category)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>
 </template>
 
@@ -9,28 +9,28 @@
 const routes = require('../../web/js/fos_js_routes.json');
 import Routing from 'fos-router';
 import { loadModal } from '../js/modal'
+import { store } from './store.js'
 
 export default {
     data() {
         return {
-            categoryList: [],
+            store
         }
     },
     methods: {
-        getCategories() {
-            fetch("/api/category", {"method": "GET"})
+        async getCategories() {
+            await fetch("/api/category", {"method": "GET"})
             .then(response => response.json())
-            .then(result => {
-                this.categoryList = result.categories;
+            .then(data => {
+                this.store.list.categories = data.categories;
             });
-            
         },
         path(category) {
             return Routing.generate('category_edit', {'id': category.id});
         },
-        loadModal(event) {
+        edit(event) {
             loadModal(event);
-        }
+        },
     },
     created() {
         this.getCategories()

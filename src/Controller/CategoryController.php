@@ -5,20 +5,25 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\ViewModel\Category\CategoryPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
+    public function __construct(
+        private CategoryPresenter $categoryPresenter,
+    ) {
+    }
+    
     #[Route('/', name: 'category_index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(): Response
     {
-        return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
-        ]);
+        return $this->render('category/index.html.twig');
     }
 
     #[Route('/new', name: 'category_new', methods: ['GET', 'POST'])]
@@ -33,7 +38,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
 
-            return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
+            $this->categoryPresenter->present($category);
+            return new JsonResponse($this->categoryPresenter->viewModel());
         }
 
         return $this->render('modal/form.html.twig', [
@@ -54,8 +60,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
 
-            //return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
-            return new Response();
+            $this->categoryPresenter->present($category);
+            return new JsonResponse($this->categoryPresenter->viewModel());
         }
 
         return $this->render('modal/form.html.twig', [

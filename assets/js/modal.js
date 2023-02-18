@@ -1,3 +1,6 @@
+import { createApp } from 'vue';
+import SubmitModal from '../components/SubmitModal.vue';
+
 document.addEventListener("DOMContentLoaded", function() {
     initModal();
 });
@@ -8,8 +11,8 @@ const initModal = () => {
 }
 
 const loadModal = (event) => {
-    console.log('Modale - loadModal')
     event.preventDefault();
+    dispose();
     const route = event.target.href;
     fetch(route, {
         headers: {
@@ -18,11 +21,22 @@ const loadModal = (event) => {
     })
     .then((response) => response.text())
     .then((text)=> {
-        let htmlElement = document.createRange().createContextualFragment(text);
+        const htmlElement = document.createRange().createContextualFragment(text);
+        const htmlModal = htmlElement.querySelector('.modal');
         const options = {'backdrop' : 'static'};
-        const modal = new bootstrap.Modal(htmlElement.querySelector('#clue-modal'), options);
-        modal.show();
+        document.querySelector('body').append(htmlModal);
+        const domModal = new bootstrap.Modal(document.querySelector('#clue-modal'), options);
+
+        domModal.show();
+        createApp(SubmitModal).mount('#v-submit-modal');
     })
+}
+
+const dispose = () => {
+    const domModal = document.querySelector('#clue-modal');
+    if (domModal) {
+        domModal.remove();
+    }
 }
 
 export { loadModal }
