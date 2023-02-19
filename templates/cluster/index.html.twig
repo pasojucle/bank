@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+    <h1>Catégories</h1>
+    <a href="{{ path('cluster_new') }}"  class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un groupe</a>
+    <table  class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody id="v-clusters" data-vue-clusters></tbody>
+    </table>
+{% endblock %}

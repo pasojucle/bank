@@ -43,11 +43,10 @@ class CategoryController extends AbstractController
         }
 
         return $this->render('modal/form.html.twig', [
-            'title' => 'Créer un compte',
+            'title' => 'Créer une catégorie',
             'form' => $form->createView(),
         ]);
     }
-
 
     #[Route('/{id}/edit', name: 'category_edit', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
@@ -65,7 +64,7 @@ class CategoryController extends AbstractController
         }
 
         return $this->render('modal/form.html.twig', [
-            'title' => 'Créer un compte',
+            'title' => 'Modifier une catégorie',
             'form' => $form->createView(),
         ]);
     }

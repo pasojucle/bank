@@ -21,7 +21,7 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
-                store.update(data, 'categories');
+                store.update(data);
                 form.querySelector('[data-bs-dismiss="modal"]').click()
             });
         }

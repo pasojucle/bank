@@ -1,7 +1,7 @@
 <template>
-    <tr v-for="category in store.list.category" :key="category.id">
-        <td>{{ category.name }}</td>
-        <td><a v-bind:href="path(category)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
+    <tr v-for="cluster in store.list.cluster" :key="cluster.id">
+        <td>{{ cluster.name }}</td>
+        <td><a v-bind:href="path(cluster)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>
 </template>
 
@@ -19,14 +19,14 @@ export default {
     },
     methods: {
         async getCategories() {
-            await fetch("/api/category", {"method": "GET"})
+            await fetch("/api/cluster", {"method": "GET"})
             .then(response => response.json())
             .then(data => {
-                this.store.list.category = data.categories;
+                this.store.list.cluster = data.clusters;
             });
         },
-        path(category) {
-            return Routing.generate('category_edit', {'id': category.id});
+        path(cluster) {
+            return Routing.generate('cluster_edit', {'id': cluster.id});
         },
         edit(event) {
             loadModal(event);

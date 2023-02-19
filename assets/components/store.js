@@ -2,10 +2,12 @@ import { reactive } from 'vue'
 
 export const store = reactive({
   list: [{
-    'categories': [],
+    'category': [],
     'account': [],
+    'cluster': []
   }],
-  update(data, listIndex) {
+  update(data) {
+    const listIndex = this.getListIndex(data);
     const index = this.list[listIndex].findIndex(item => {
       return (data.id === item.id)
     })
@@ -18,17 +20,15 @@ export const store = reactive({
       return;
     }
     this.list[listIndex].push(data);
+  },
+  getListIndex(data) {
+    return data.entityName.split('\\').pop().toLowerCase();
   }
 })
 
 const ASC = (a, b) => {
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
-  if (nameA < nameB) {
-    return -1;
-  }
-  if (nameA > nameB) {
-    return 1;
-  }
-  return 0;
+
+  return nameA.localeCompare(nameB);
 }

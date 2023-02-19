@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModel\Category;
 
-use App\Entity\BikeRide;
 use App\Entity\Category;
 use App\ViewModel\Category\CategoryViewModel;
 
