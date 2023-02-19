@@ -42,7 +42,7 @@ class AccountRepository extends ServiceEntityRepository
    /**
     * @return Account[] Returns an array of Account objects
     */
-    public function findAllAcs(): array
+    public function findAllASC(): array
     {
         return $this->createQueryBuilder('a')
             ->orderBy('a.name', 'ASC')

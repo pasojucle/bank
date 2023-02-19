@@ -39,7 +39,6 @@ class ClusterRepository extends ServiceEntityRepository
         }
     }
 
-
     /**
     * @return Cluster[] Returns an array of Cluster objects
     */

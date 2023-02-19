@@ -2,25 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Account;
 use App\Entity\User;
+use App\Entity\Account;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\ViewModel\Account\AccountPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/account')]
 class AccountController extends AbstractController
 {
+    public function __construct(private AccountPresenter $accountPresenter)
+    {
+        
+    }
+
     #[Route('/', name: 'account_index', methods: ['GET'])]
     public function index(AccountRepository $accountRepository): Response
     {
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-        return $this->render('account/index.html.twig', [
-            'accounts' => $accountRepository->findAllAcs(),
-        ]);
+        return $this->render('account/index.html.twig');
     }
 
     #[Route('/new', name: 'account_new', methods: ['GET', 'POST'])]
@@ -40,7 +45,8 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $accountRepository->save($account, true);
 
-            return $this->redirectToRoute('account_index', [], Response::HTTP_SEE_OTHER);
+            $this->accountPresenter->present($account);
+            return new JsonResponse($this->accountPresenter->viewModel());
         }
 
         return $this->render('modal/form.html.twig', [
@@ -49,7 +55,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'account_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'account_edit', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function edit(Request $request, Account $account, AccountRepository $accountRepository): Response
     {
         $form = $this->createForm(AccountType::class, $account, [
@@ -60,11 +66,12 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $accountRepository->save($account, true);
 
-            return $this->redirectToRoute('account_index', [], Response::HTTP_SEE_OTHER);
+            $this->accountPresenter->present($account);
+            return new JsonResponse($this->accountPresenter->viewModel());
         }
 
         return $this->render('modal/form.html.twig', [
-            'title' => 'Créer un compte',
+            'title' => 'Modifier un compte',
             'form' => $form->createView(),
         ]);
     }

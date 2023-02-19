@@ -19,8 +19,12 @@ import './js/modal';
 import { createApp } from 'vue';
 import Categories from './components/Categories.vue'
 createApp(Categories).mount('#v-categories');
+
 import Clusters from './components/Clusters.vue'
 createApp(Clusters).mount('#v-clusters');
+
+import Accounts from './components/Accounts.vue'
+createApp(Accounts).mount('#v-accounts');
 
 
 
