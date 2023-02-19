@@ -17,7 +17,7 @@ class ClusterController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_cluster_list', methods: ['GET'])]
+    #[Route('/', name: 'api_cluster_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         $this->clustersPresenter->present($this->clusterRepository->findAllASC());

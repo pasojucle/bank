@@ -23,7 +23,7 @@ class CategoryController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_category_list', methods: ['GET'])]
+    #[Route('/', name: 'api_category_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         $this->categoriesPresenter->present($this->categoryRepository->findAllASC());

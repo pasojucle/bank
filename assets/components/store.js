@@ -2,12 +2,18 @@ import { reactive } from 'vue'
 
 export const store = reactive({
   list: [{
-    'category': [],
     'account': [],
-    'cluster': []
+    'category': [],
+    'cluster': [],
+    'label': [],
+    'transaction': [],
   }],
   update(data) {
+    console.log('data', data);
     const listIndex = this.getListIndex(data);
+    console.log('listIndex', listIndex);
+    console.log('lists', this.list);
+    console.log('list', this.list[listIndex]);
     const index = this.list[listIndex].findIndex(item => {
       return (data.id === item.id)
     })

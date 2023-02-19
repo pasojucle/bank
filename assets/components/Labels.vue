@@ -1,7 +1,7 @@
 <template>
-    <tr v-for="account in store.list.account" :key="account.id">
-        <td>{{ account.name }}</td>
-        <td><a v-bind:href="path(account)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
+    <tr v-for="label in store.list.label" :key="label.id">
+        <td>{{ label.name }}</td>
+        <td><a v-bind:href="path(label)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>
 </template>
 
@@ -19,14 +19,14 @@ export default {
     },
     methods: {
         async getList() {
-            await fetch(Routing.generate('api_account_list'), {"method": "GET"})
+            await fetch(Routing.generate('api_label_list'), {"method": "GET"})
             .then(response => response.json())
             .then(data => {
-                this.store.list.account = data.accounts;
+                this.store.list.label = data.labels;
             });
         },
-        path(account) {
-            return Routing.generate('account_edit', {'id': account.id});
+        path(label) {
+            return Routing.generate('label_edit', {'id': label.id});
         },
         edit(event) {
             loadModal(event);

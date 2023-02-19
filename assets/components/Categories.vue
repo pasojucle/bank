@@ -18,8 +18,8 @@ export default {
         }
     },
     methods: {
-        async getCategories() {
-            await fetch("/api/category", {"method": "GET"})
+        async getList() {
+            await fetch(Routing.generate('api_category_list'), {"method": "GET"})
             .then(response => response.json())
             .then(data => {
                 this.store.list.category = data.categories;
@@ -33,7 +33,7 @@ export default {
         },
     },
     created() {
-        this.getCategories()
+        this.getList()
     },
 }
 </script>

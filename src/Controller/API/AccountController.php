@@ -17,7 +17,7 @@ class AccountController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_account_list', methods: ['GET'])]
+    #[Route('/', name: 'api_account_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         $this->accountsPresenter->present($this->accountRepository->findAllASC());
