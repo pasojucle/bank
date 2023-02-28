@@ -15,6 +15,6 @@ class DashboardController extends AbstractController
     #[Route('/', name: 'dashboard', methods: ['GET'])]
     public function dashboard(): Response
     {
-        return $this->redirectToRoute('account_index');
+        return $this->render('dashboard/index.html.twig');
     }
 }

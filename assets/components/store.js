@@ -1,4 +1,6 @@
 import { reactive } from 'vue'
+const routes = require('../../web/js/fos_js_routes.json');
+import Routing from 'fos-router';
 
 export const store = reactive({
   list: [{
@@ -8,27 +10,37 @@ export const store = reactive({
     'label': [],
     'transaction': [],
   }],
+  async getList(entity) {
+    await fetch(Routing.generate(`api_${entity}_list`), {"method": "GET"})
+    .then(response => response.json())
+    .then(data => {
+        this.list[entity] = data.list;
+    });
+},
   update(data) {
     console.log('data', data);
-    const listIndex = this.getListIndex(data);
-    console.log('listIndex', listIndex);
+    const entity = this.getEntity(data);
+    console.log('entity', entity);
     console.log('lists', this.list);
-    console.log('list', this.list[listIndex]);
-    const index = this.list[listIndex].findIndex(item => {
+    console.log('list', this.list[entity]);
+    const index = this.list[entity].findIndex(item => {
       return (data.id === item.id)
     })
-    this.updateList(data, listIndex, index);
-    this.list[listIndex].sort(ASC);
+    this.updateList(data, entity, index);
+    this.list[entity].sort(ASC);
   },
-  updateList(data, listIndex, index) {
+  updateList(data, entity, index) {
     if (-1 < index) {
-      this.list[listIndex].splice(index, 1, data);
+      this.list[entity].splice(index, 1, data);
       return;
     }
-    this.list[listIndex].push(data);
+    this.list[entity].push(data);
   },
-  getListIndex(data) {
+  getEntity(data) {
     return data.entityName.split('\\').pop().toLowerCase();
+  },
+  getDomElement(selector) {
+    return document.querySelector(selector);
   }
 })
 

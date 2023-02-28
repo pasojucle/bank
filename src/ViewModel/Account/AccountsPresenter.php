@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModel\Account;
 
-class AccountsPresenter
+use App\ViewModel\AbstractPresenter;
+
+class AccountsPresenter extends AbstractPresenter
 {
     private $viewModel;
 

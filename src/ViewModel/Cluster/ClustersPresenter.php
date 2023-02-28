@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModel\Cluster;
 
-class ClustersPresenter
+use App\ViewModel\AbstractPresenter;
+
+class ClustersPresenter extends AbstractPresenter
 {
     private $viewModel;
 

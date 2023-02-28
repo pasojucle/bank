@@ -1,6 +1,7 @@
 <template>
     <tr v-for="category in store.list.category" :key="category.id">
         <td>{{ category.name }}</td>
+        <td>{{ category.type }}</td>
         <td><a v-bind:href="path(category)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>
 </template>
@@ -18,13 +19,6 @@ export default {
         }
     },
     methods: {
-        async getList() {
-            await fetch(Routing.generate('api_category_list'), {"method": "GET"})
-            .then(response => response.json())
-            .then(data => {
-                this.store.list.category = data.categories;
-            });
-        },
         path(category) {
             return Routing.generate('category_edit', {'id': category.id});
         },
@@ -33,7 +27,7 @@ export default {
         },
     },
     created() {
-        this.getList()
+        this.store.getList('category');
     },
 }
 </script>

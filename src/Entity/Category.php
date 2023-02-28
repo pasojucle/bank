@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enum\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +19,8 @@ class Category
     #[ORM\Column(length: 100)]
     private string $name = '';
 
-    #[ORM\ManyToOne(inversedBy: 'categories')]
-    private Cluster $cluster;
+    #[ORM\Column(type:"string", enumType: CategoryType::class)]
+    private CategoryType $type;
 
     #[ORM\OneToMany(mappedBy: 'defaultCategory', targetEntity: Label::class)]
     private Collection $labels;
@@ -29,6 +30,7 @@ class Category
 
     public function __construct()
     {
+        $this->type  = CategoryType::EXPENSE;
         $this->labels = new ArrayCollection();
         $this->transactions = new ArrayCollection();
     }
@@ -55,14 +57,14 @@ class Category
         return $this;
     }
 
-    public function getCluster(): ?Cluster
+    public function getType(): CategoryType
     {
-        return $this->cluster;
+        return $this->type;
     }
 
-    public function setCluster(?Cluster $cluster): self
+    public function setType(CategoryType $type): self
     {
-        $this->cluster = $cluster;
+        $this->type = $type;
 
         return $this;
     }

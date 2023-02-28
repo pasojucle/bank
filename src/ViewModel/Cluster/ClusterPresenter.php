@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\ViewModel\Cluster;
 
 use App\Entity\Cluster;
+use App\ViewModel\AbstractPresenter;
 use App\ViewModel\Cluster\ClusterViewModel;
 
-class ClusterPresenter
+class ClusterPresenter extends AbstractPresenter
 {
     private $viewModel;
 

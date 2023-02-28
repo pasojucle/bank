@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Opérations{% endblock %}
+{% block title %}Comptes{% endblock %}
 
 {% block body %}
-    <h1>Opération</h1>
-    <a href="{{ path('transaction_new') }}" class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter une opération</a>
+    <h1>Comptes</h1>
+    <a href="{{ path('account_new') }}" class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un compte</a>
 
     <table class="table table-striped table-sm">
         <thead>
@@ -13,6 +13,6 @@
                 <th>actions</th>
             </tr>
         </thead>
-        <tbody id="v-transactions" data-vue-transactionss></tbody>
+        <tbody id="v-accounts" data-vue-accounts></tbody>
     </table>
 {% endblock %}

@@ -22,7 +22,7 @@ class LabelController extends AbstractController
     {
         $this->labelsPresenter->present($this->labelRepository->findAllASC());
         return new JsonResponse([
-            'labels' => $this->labelsPresenter->viewModel()->labels,
+            'list' => $this->labelsPresenter->viewModel()->labels,
         ]);
     }
 }

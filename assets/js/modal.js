@@ -1,5 +1,4 @@
-import { createApp } from 'vue';
-import SubmitModal from '../components/SubmitModal.vue';
+import { mountModalComponents } from '../components/mountComponents.js'
 
 document.addEventListener("DOMContentLoaded", function() {
     initModal();
@@ -12,7 +11,8 @@ const initModal = () => {
 
 const loadModal = (event) => {
     event.preventDefault();
-    dispose();
+    const modalTarget = event.target.dataset.bsTarget;
+    dispose(modalTarget);
     const route = event.target.href;
     fetch(route, {
         headers: {
@@ -25,15 +25,16 @@ const loadModal = (event) => {
         const htmlModal = htmlElement.querySelector('.modal');
         const options = {'backdrop' : 'static'};
         document.querySelector('body').append(htmlModal);
-        const domModal = new bootstrap.Modal(document.querySelector('#clue-modal'), options);
+        const domModal = new bootstrap.Modal(document.querySelector(modalTarget), options);
 
         domModal.show();
-        createApp(SubmitModal).mount('#v-submit-modal');
+
+        mountModalComponents();
     })
 }
 
-const dispose = () => {
-    const domModal = document.querySelector('#clue-modal');
+const dispose = (modalTarget) => {
+    const domModal = document.querySelector(modalTarget);
     if (domModal) {
         domModal.remove();
     }

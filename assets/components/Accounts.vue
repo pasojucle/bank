@@ -18,13 +18,6 @@ export default {
         }
     },
     methods: {
-        async getList() {
-            await fetch(Routing.generate('api_account_list'), {"method": "GET"})
-            .then(response => response.json())
-            .then(data => {
-                this.store.list.account = data.accounts;
-            });
-        },
         path(account) {
             return Routing.generate('account_edit', {'id': account.id});
         },
@@ -33,7 +26,7 @@ export default {
         },
     },
     created() {
-        this.getList()
+        this.store.getList('account');
     },
 }
 </script>

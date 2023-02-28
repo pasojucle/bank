@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Account;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,9 +44,13 @@ class AccountRepository extends ServiceEntityRepository
    /**
     * @return Account[] Returns an array of Account objects
     */
-    public function findAllASC(): array
+    public function findByUser(?User $user): array
     {
         return $this->createQueryBuilder('a')
+            // ->andWhere(
+            //     (new Expr)->eq('a.user', ':user')
+            // )
+            // ->setParameter('user', $user)
             ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult()

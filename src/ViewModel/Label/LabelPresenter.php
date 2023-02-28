@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\ViewModel\Label;
 
 use App\Entity\Label;
+use App\ViewModel\AbstractPresenter;
 use App\ViewModel\Label\LabelViewModel;
 
-class LabelPresenter
+class LabelPresenter extends AbstractPresenter
 {
     private $viewModel;
 

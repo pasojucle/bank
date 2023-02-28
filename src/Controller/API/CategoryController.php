@@ -28,7 +28,7 @@ class CategoryController extends AbstractController
     {
         $this->categoriesPresenter->present($this->categoryRepository->findAllASC());
         return new JsonResponse([
-            'categories' => $this->categoriesPresenter->viewModel()->categories,
+            'list' => $this->categoriesPresenter->viewModel()->categories,
         ]);
     }
 

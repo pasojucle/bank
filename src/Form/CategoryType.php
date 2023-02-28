@@ -2,14 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
+
 use App\Entity\Cluster;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Enum\CategoryType as EnumCategoryType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CategoryType extends AbstractType
 {
@@ -22,9 +24,14 @@ class CategoryType extends AbstractType
                     new NotBlank(),
                 ]
             ])
-            ->add('cluster', EntityType::class, [
+            ->add('type', EnumType::class, [
                 'label' => 'Groupe de dépence',
-                'class' => Cluster::class,
+                'class' => EnumCategoryType::class,
+                'choice_label' => fn ($choice) => match ($choice) {
+                    EnumCategoryType::REVENUE => 'category_type.revenu',
+                    EnumCategoryType::EXPENSE => 'category_type.expense',
+                    EnumCategoryType::SAVING => 'category_type.saving',
+                },
             ])
         ;
     }

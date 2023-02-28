@@ -2,11 +2,12 @@
 
 namespace App\Controller\API;
 
+use App\Entity\User;
 use App\Repository\AccountRepository;
 use App\ViewModel\Account\AccountsPresenter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/api/account')]
 class AccountController extends AbstractController
@@ -20,9 +21,11 @@ class AccountController extends AbstractController
     #[Route('/', name: 'api_account_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
-        $this->accountsPresenter->present($this->accountRepository->findAllASC());
+        /** @var User $user */
+        $user = $this->getUser();
+        $this->accountsPresenter->present($this->accountRepository->findByUser($user));
         return new JsonResponse([
-            'accounts' => $this->accountsPresenter->viewModel()->accounts,
+            'list' => $this->accountsPresenter->viewModel()->accounts,
         ]);
     }
 }

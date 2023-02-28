@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModel\Label;
 
-class LabelsPresenter
+use App\ViewModel\AbstractPresenter;
+
+class LabelsPresenter extends AbstractPresenter
 {
     private $viewModel;
 
