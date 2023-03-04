@@ -1,38 +1,30 @@
 <template>
     <div class="mb-3 datalist-container">
-        <label for="{{ select.id }}" class="form-label">{{ select.label }}</label>
+        <label for="{{ select.id }}" class="form-label">{{ selectedLabel.label }}</label>
         <div class="form-group datalist-container">
             <div id="complete" class="form-control">{{ getSearchName() }}</div>
-            <input type="text" class="form-control" v-model="text"/>
+            <input type="text" :class="classComplete" v-model="input" @keydown.enter.prevent="complete($event)"/>
 
         </div>
-        <select :id="select.id" :name="select.name" :value="select.value" required v-model="selected" class="form-control hidden">
-            <option v-for="label in store.list.label" :value="label.id">{{ label.name }}</option>
+        <select :id="selectedLabel.id" :name="selectedLabel.name" required v-model="selectedLabel.value" class="form-control hidden">
+            <option v-for="label in store.list.label" :key="label.id" :value="label.id" :selected="label.id == selectedLabel.value">{{ label.name }}</option>
         </select>
     </div>
-
-    <!-- <div class="form-group datalist-container">
-        <div id="complete" class="form-control">bonjour</div>
-        <input type="text" class="form-control" v-model="text"/>
-    </div> -->
-
 </template>
-
 
 <script>
 
 import { store } from './../store.js'
 
-
-
 export default {
     data() {
         return {
             el: '',
-            text: '',
+            classComplete: 'form-control',
+            input: '',
             search: null,
             value: '',
-            select: {},
+            selectedLabel: {},
             store
         }
     },
@@ -42,36 +34,54 @@ export default {
                return  this.search.name;
             }
             return '';
+        },
+        capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        complete() {
+            if (0 < this.search.id) {
+                this.input = this.search.name;
+            }
+        },
+        refresh(value) {
+            if (this.search && value === this.search.name) {
+                this.classComplete = 'form-control complete';
+                this.selectedLabel.value = this.search.id;
+               return;
+            }
+            this.selectedLabel.value = null;
+            this.classComplete = 'form-control';
         }
     },
     watch: {
-        text(value) {
-            let result = null;
+        input(value) {
+            let result = [];
+            if (0 < value.length) {
+                this.input = this.capitalize(value);
+            }
             if (2 < value.length) {
                 result = this.store.list.label.filter((element) => {
-                    console.log('element', element.name);
                     if (element.name.toLowerCase().includes(value.toLowerCase())) {
                         return element;
                     }
                 });
             }
-            this.search = (result) ? result.shift() : null;
+
+            this.search = (0 < result.length && (null === this.selectedLabel.value || result.length <= this.selectedLabel.value.length)) ? result.shift() : null;
+            this.refresh(value);
+            console.log('[selectedLabel]', this.selectedLabel)
         },
-        choice(value) {
-            console.log('watch choice', value);
-        }
     },
     created() {
         this.store.getList('label');
         this.el = this.store.getDomElement('.v-datalist');
-        this.select = {
+        this.selectedLabel = {
             'id': this.el.getAttribute('data-id'),
             'label': this.el.getAttribute('data-label'),
             'value': this.el.getAttribute('data-value'),
             'name': this.el.getAttribute('data-name'),
             'required': this.el.getAttribute('data-required'),
         }
-
     },
 }
 </script>
@@ -95,7 +105,10 @@ export default {
     }
     .datalist-container .form-group #complete {
         color: #999;
-        border: none;
+        border: 1px solid transparent;
+    }
+    .datalist-container .form-group .complete {
+        color: #0d6efd;
     }
 
 </style>
