@@ -18,7 +18,7 @@ class LabelViewModel
 
         $labelView->entityName = get_class($label);
         $labelView->id = $label->getId();
-        $labelView->name = mb_convert_case(ucfirst($label->getName()), MB_CASE_TITLE, 'UTF-8');
+        $labelView->name = mb_convert_case($label->getName(), MB_CASE_TITLE, 'UTF-8');
 
         return $labelView;
     }

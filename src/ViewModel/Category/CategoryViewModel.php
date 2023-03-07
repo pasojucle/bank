@@ -22,7 +22,7 @@ class CategoryViewModel
         $categoryView = new self();
         $categoryView->entityName = get_class($category);
         $categoryView->id = $category->getId();
-        $categoryView->name = $category->getName();
+        $categoryView->name = mb_convert_case($category->getName(), MB_CASE_TITLE, 'UTF-8');
         $categoryView->type = $services->translator->trans(sprintf('category_type.%s', $category->getType()->value));
 
         return $categoryView;

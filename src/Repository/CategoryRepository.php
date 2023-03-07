@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+use App\Entity\Label;
 use App\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -48,6 +51,31 @@ class CategoryRepository extends ServiceEntityRepository
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findDefaultByLabel(Label $label, User $user)
+    {
+        return $this->createQueryBuilder('c')
+        ->join('c.transactions', 't')
+        ->leftJoin('t.creditAccount', 'credit')
+        ->leftJoin('t.debitAccount', 'debit')
+            ->andWhere(
+                (new Expr())->eq('t.label', ':label'),
+                (new Expr())->orX(
+                    (new Expr())->eq('credit.user', ':user'),
+                    (new Expr())->eq('debit.user', ':user'),
+                )
+            )
+            ->setParameters([
+                'label' => $label,
+                'user' => $user,
+            ])
+            ->groupBy('t.category')
+            ->setMaxResults(1)
+            ->orderBy((new Expr())->count('t.id'), 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 

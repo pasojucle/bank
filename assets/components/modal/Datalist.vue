@@ -15,6 +15,7 @@
 <script>
 
 import { store } from './../store.js'
+import Routing from 'fos-router';
 
 export default {
     data() {
@@ -47,15 +48,32 @@ export default {
             if (this.search && value === this.search.name) {
                 this.classComplete = 'form-control complete';
                 this.selectedLabel.value = this.search.id;
+                this.getDefaultCategory();
                return;
             }
             this.selectedLabel.value = null;
             this.classComplete = 'form-control';
+        },
+        async getDefaultCategory() {
+            await fetch(Routing.generate(`api_category_default`, {'label': this.search.id}), {
+                method: "GET", 
+                headers: {
+                    "Authorization": this.store.getAuthToken(),
+            }})
+            .then(response => response.json())
+            .then(data => {
+                console.log('category', data.category)
+                if (data.category) {
+                    console.log('categoryId', data.category.id);
+                   document.querySelector('[name ="transaction[category]"]').value = data.category.id;
+                }
+            });
         }
     },
     watch: {
         input(value) {
             let result = [];
+            console.log('labels', this.store.list.label)
             if (0 < value.length) {
                 this.input = this.capitalize(value);
             }

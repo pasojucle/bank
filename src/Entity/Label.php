@@ -18,10 +18,6 @@ class Label
     #[ORM\Column(length: 100)]
     private string $name = '';
 
-    #[ORM\ManyToOne(inversedBy: 'labels')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $defaultCategory = null;
-
     #[ORM\OneToMany(mappedBy: 'label', targetEntity: Transaction::class)]
     private Collection $transactions;
 
@@ -48,18 +44,6 @@ class Label
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDefaultCategory(): ?Category
-    {
-        return $this->defaultCategory;
-    }
-
-    public function setDefaultCategory(?Category $defaultCategory): self
-    {
-        $this->defaultCategory = $defaultCategory;
 
         return $this;
     }

@@ -2,16 +2,17 @@
 
 namespace App\Controller\API;
 
+use App\Entity\Label;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use App\ViewModel\Category\CategoriesPresenter;
 use App\ViewModel\Category\CategoryPresenter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\ViewModel\Category\CategoriesPresenter;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/api/category')]
 class CategoryController extends AbstractController
@@ -67,5 +68,18 @@ class CategoryController extends AbstractController
         }
 
         return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    #[Route('/default/{label}', name: 'api_category_default', methods: ['GET'], options: ['expose' => true])]
+    public function defaultCategory(
+        Label $label
+    ): JsonResponse
+    {
+        $this->categoryPresenter->present($this->categoryRepository->findDefaultByLabel($label, $this->getUser()));
+        return new JsonResponse([
+            'category' => $this->categoryPresenter->viewModel(),
+        ]);
     }
 }

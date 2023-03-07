@@ -15,6 +15,8 @@ class DashboardController extends AbstractController
     #[Route('/', name: 'dashboard', methods: ['GET'])]
     public function dashboard(): Response
     {
+        $APIToken = bin2hex(random_bytes(60));
+        dump($APIToken);
         return $this->render('dashboard/index.html.twig');
     }
 }

@@ -1,6 +1,8 @@
 import { reactive } from 'vue'
 const routes = require('../../web/js/fos_js_routes.json');
+
 import Routing from 'fos-router';
+
 
 export const store = reactive({
   list: [{
@@ -10,19 +12,23 @@ export const store = reactive({
     'label': [],
     'transaction': [],
   }],
+  getAuthToken() {
+    const authToken = document.querySelector('div[data-bearer]');
+    return "Bearer " + authToken.dataset.bearer;
+  },
   async getList(entity) {
-    await fetch(Routing.generate(`api_${entity}_list`), {"method": "GET"})
+    await fetch(Routing.generate(`api_${entity}_list`), {
+      method: "GET", 
+      headers: {
+        "Authorization": this.getAuthToken(),
+    }})
     .then(response => response.json())
     .then(data => {
         this.list[entity] = data.list;
     });
-},
+  },
   update(data) {
-    console.log('data', data);
     const entity = this.getEntity(data);
-    console.log('entity', entity);
-    console.log('lists', this.list);
-    console.log('list', this.list[entity]);
     const index = this.list[entity].findIndex(item => {
       return (data.id === item.id)
     })

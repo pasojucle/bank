@@ -18,7 +18,7 @@ class AccountViewModel
 
         $accountView->entityName = get_class($account);
         $accountView->id = $account->getId();
-        $accountView->name = $account->getName();
+        $accountView->name =  mb_convert_case($account->getName(), MB_CASE_TITLE, 'UTF-8');
 
         return $accountView;
     }
