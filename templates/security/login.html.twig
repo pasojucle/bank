@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authentification{% endblock %}
+
+{% block background %}
+    {% include 'background/backgrounds.html.twig' with {'alt': 'Mon compte'} %}
+{% endblock %}
+
+{% block body %}
+<form method="post">
+    <div class="wrapper wrapper wrapper-medium-width">
+        <div class="wrapper-title">
+            <h1>Me connecter</h1>
+        </div>
+        <div class="block background-green block-small background-color reveal">
+            <div class="block-body">
+                {{ form_start(form) }}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </div>
+                {% endif %}
+                {{ form_row(form.username) }}
+                {{ form_row(form.password) }}
+                {{ form_row(form._rememberMe) }}
+
+                <div class="block-footer">
+
+                    <button class="btn btn-primary float-right" type="submit">
+                        <i class="fas fa-check-circle"></i> Se connecter
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    
+</form>
+{% endblock %}
