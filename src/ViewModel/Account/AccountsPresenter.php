@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModel\Account;
 
+use App\Repository\TransactionRepository;
 use App\ViewModel\AbstractPresenter;
 
 class AccountsPresenter extends AbstractPresenter
@@ -13,7 +14,7 @@ class AccountsPresenter extends AbstractPresenter
     public function present(array $accounts): void
     {
         if (!empty($accounts)) {
-            $this->viewModel = AccountsViewModel::fromAccounts($accounts);
+            $this->viewModel = AccountsViewModel::fromAccounts($accounts, $this->services);
         } else {
             $this->viewModel = new AccountsViewModel();
         }

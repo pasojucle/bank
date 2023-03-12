@@ -18,11 +18,11 @@ class TransactionViewModel
     public ?int $id = null;
     public LabelViewModel $label;
     public CategoryViewModel $category;
-    public AccountViewModel $debitAccount;
-    public AccountViewModel $creditAccount;
+    public ?AccountViewModel $debitAccount;
+    public ?AccountViewModel $creditAccount;
     public string $amount;
     public bool $checked;
-    public string $comment;
+    public ?string $comment;
 
     public static function fromTransaction(Transaction $transaction, ServicesPresenter $services)
     {
@@ -32,8 +32,8 @@ class TransactionViewModel
         $transactionView->id = $transaction->getId();
         $transactionView->label = LabelViewModel::fromLabel($transaction->getLabel());
         $transactionView->category = CategoryViewModel::fromCategory($transaction->getCategory(), $services);
-        $transactionView->debitAccount = AccountViewModel::fromAccount($transaction->getDebitAccount());
-        $transactionView->creditAccount = AccountViewModel::fromAccount($transaction->getCreditAccount());
+        $transactionView->debitAccount = ($transaction->getDebitAccount()) ? AccountViewModel::fromAccount($transaction->getDebitAccount()) : null;
+        $transactionView->creditAccount = ($transaction->getCreditAccount()) ?  AccountViewModel::fromAccount($transaction->getCreditAccount()) : null;
         $transactionView->amount = (new Currency($transaction->getAmount()))->toString();
         $transactionView->checked = $transaction->isChecked();
         $transactionView->comment = $transaction->getComment();

@@ -35,11 +35,14 @@ class TransactionController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
+            $transactionType = $request->request->all('transaction')['transactionType'];
+            $setAccount = (TransactionType::TRANSACTION_TYPE_DEBIT === (int)$transactionType) ? 'setDebitAccount' : 'setCreditAccount';
+            $transaction->$setAccount($account);
             $transactionRepository->save($transaction, true);
 
             $this->transactionPresenter->present($transaction);
-            return new JsonResponse($this->transactionPresenter->viewModel());
+            return new JsonResponse([$this->transactionPresenter->viewModel()]);
         }
 
         return $this->render('modal/form.html.twig', [

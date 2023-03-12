@@ -42,11 +42,11 @@ class AccountController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
             $accountRepository->save($account, true);
 
             $this->accountPresenter->present($account);
-            return new JsonResponse($this->accountPresenter->viewModel());
+            return new JsonResponse([$this->accountPresenter->viewModel()]);
         }
 
         return $this->render('modal/form.html.twig', [
@@ -67,7 +67,7 @@ class AccountController extends AbstractController
             $accountRepository->save($account, true);
 
             $this->accountPresenter->present($account);
-            return new JsonResponse($this->accountPresenter->viewModel());
+            return new JsonResponse([$this->accountPresenter->viewModel()]);
         }
 
         return $this->render('modal/form.html.twig', [

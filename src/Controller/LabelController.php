@@ -38,7 +38,7 @@ class LabelController extends AbstractController
             $labelRepository->save($label, true);
 
             $this->labelPresenter->present($label);
-            return new JsonResponse($this->labelPresenter->viewModel());
+            return new JsonResponse([$this->labelPresenter->viewModel()]);
         }
 
         return $this->render('modal/form.html.twig', [

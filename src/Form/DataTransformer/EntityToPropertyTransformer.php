@@ -11,36 +11,16 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class EntityToPropertyTransformer implements DataTransformerInterface
 {
-    /** @var ObjectManager */
-    protected $em;
-    /** @var  string */
-    protected $className;
-    /** @var  string */
-    protected $textProperty;
-    /** @var  string */
-    protected $primaryKey;
-    /** @var string  */
-    protected $newTagPrefix;
-    /** @var string  */
-    protected $newTagText;
-    /** @var PropertyAccessor */
-    protected $accessor;
+    private string $className;
+    protected PropertyAccessor $accessor;
 
-    /**
-     * @param ObjectManager $em
-     * @param string                 $class
-     * @param string|null            $textProperty
-     * @param string                 $primaryKey
-     * @param string                 $newTagPrefix
-     */
-    public function __construct(ObjectManager $em, $class, $textProperty = null, $primaryKey = 'id', $newTagPrefix = '__', $newTagText = ' (NEW)')
+    public function __construct(
+        private ObjectManager $em, 
+        private string $class,
+        private $primaryKey = 'id', 
+        private $newTagPrefix = '__',)
     {
-        $this->em = $em;
         $this->className = $class;
-        $this->textProperty = $textProperty;
-        $this->primaryKey = $primaryKey;
-        $this->newTagPrefix = $newTagPrefix;
-        $this->newTagText = $newTagText;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -58,15 +38,12 @@ class EntityToPropertyTransformer implements DataTransformerInterface
             return null;
         }
 
-        $text = is_null($this->textProperty)
-            ? (string) $entity
-            : $this->accessor->getValue($entity, $this->textProperty);
+        $text = (string) $entity;
 
         if ($this->em->contains($entity)) {
             $value = (string) $this->accessor->getValue($entity, $this->primaryKey);
         } else {
             $value = $this->newTagPrefix . $text;
-            $text = $text.$this->newTagText;
         }
 
         $data[$value] = $text;
@@ -82,6 +59,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {dump('reverseTransform');
+        dump($value);
         if (empty($value)) {
             return null;
         }
@@ -90,10 +68,11 @@ class EntityToPropertyTransformer implements DataTransformerInterface
         $tagPrefixLength = strlen($this->newTagPrefix);
         $cleanValue = substr($value, $tagPrefixLength);
         $valuePrefix = substr($value, 0, $tagPrefixLength);
-        if ($valuePrefix == $this->newTagPrefix) {
+        if ($valuePrefix === $this->newTagPrefix) {
             // In that case, we have a new entry
             $entity = new $this->className;
-            $this->accessor->setValue($entity, $this->textProperty, $cleanValue);
+            $this->accessor->setValue($entity, 'name', $cleanValue);
+            $this->em->persist($entity);
         } else {
             // We do not search for a new entry, as it does not exist yet, by definition
             try {

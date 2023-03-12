@@ -22,10 +22,6 @@ class LabelType extends AbstractType
                     new NotBlank(),
                 ]
             ])
-            ->add('defaultCategory', EntityType::class, [
-                'label' => 'Catégorie de dépence par défaut',
-                'class' => Category::class,
-            ])
         ;
     }
 

@@ -6,7 +6,6 @@ use App\Entity\Label;
 use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Form\Type\DatalistType;
-use App\Repository\LabelRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,10 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TransactionType extends AbstractType
 {
-    public function __construct(private LabelRepository $labelRepository)
-    {
-        
-    }
+    public const TRANSACTION_TYPE_DEBIT = 0;
+    public const TRANSACTION_TYPE_CREDIT = 1;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -34,12 +31,6 @@ class TransactionType extends AbstractType
             ->add('label', DatalistType::class, [
                 'label' => 'Libellé',
                 'class' => Label::class,
-                // 'choice_label' => 'name',
-                // 'choices' => $this->labelRepository->findAllASC(),
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('l')
-                        ->orderBy('l.name', 'ASC');
-                },
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
@@ -57,14 +48,15 @@ class TransactionType extends AbstractType
             ->add('transactionType', ChoiceType::class, [
                 'label' => 'Type',
                 'choices' => [
-                    'Dépense' => 0,
-                    'Revenue' => 1,
+                    'Dépense' => self::TRANSACTION_TYPE_DEBIT,
+                    'Revenue' => self::TRANSACTION_TYPE_CREDIT,
                 ],
                 'mapped' => false,
             ])
             ->add('comment', TextType::class, [
                 'label' => 'Commentaire'
             ])
+
         ;
     }
 

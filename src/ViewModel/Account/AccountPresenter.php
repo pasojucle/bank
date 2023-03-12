@@ -15,7 +15,7 @@ class AccountPresenter extends AbstractPresenter
     public function present(?Account $account): void
     {
         if (null !== $account) {
-            $this->viewModel = AccountViewModel::fromAccount($account);
+            $this->viewModel = AccountViewModel::fromAccount($account, $this->services);
         } else {
             $this->viewModel = new AccountViewModel();
         }

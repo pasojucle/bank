@@ -25,15 +25,21 @@ export const store = reactive({
     .then(response => response.json())
     .then(data => {
         this.list[entity] = data.list;
+        console.log('list', this.list[entity])
     });
   },
   update(data) {
-    const entity = this.getEntity(data);
-    const index = this.list[entity].findIndex(item => {
-      return (data.id === item.id)
-    })
-    this.updateList(data, entity, index);
-    this.list[entity].sort(ASC);
+    data.forEach(object => {
+      const entity = this.getEntity(object);
+      if (undefined !== this.list[entity]) {
+        const index = this.list[entity].findIndex(item => {
+          return (object.id === item.id)
+        })
+        this.updateList(object, entity, index);
+        this.list[entity].sort(ASC);
+      }
+    });
+    
   },
   updateList(data, entity, index) {
     if (-1 < index) {

@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Transaction;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -50,5 +52,32 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+
+    public function getActualBalanceByAccount(Account $account): int
+    {
+        $credit = $this->createQueryBuilder('t')
+            ->select('SUM(t.amount) AS credit')
+            ->andWhere(
+                (new Expr())->eq('t.creditAccount', ':account'),
+            )
+            ->setParameter('account', $account)
+            ->getQuery()
+            ->getSingleScalarResult()
+            ?? 0
+        ;
+
+        $debit = $this->createQueryBuilder('t')
+            ->select('SUM(t.amount) AS debit')
+            ->andWhere(
+                (new Expr())->eq('t.debitAccount', ':account'),
+            )
+            ->setParameter('account', $account)
+            ->getQuery()
+            ->getSingleScalarResult()
+            ?? 0
+        ;
+        return $credit - $debit;
     }
 }

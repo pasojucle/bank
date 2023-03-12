@@ -6,9 +6,7 @@ namespace App\ViewModel\Category;
 
 use App\Entity\Category;
 use App\ViewModel\AbstractPresenter;
-use App\ViewModel\ServicesPresenter;
 use App\ViewModel\Category\CategoryViewModel;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryPresenter extends AbstractPresenter
 {

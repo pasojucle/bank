@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Form\DataTransformer\EntityToPropertyTransformer;
 
 class DatalistType extends AbstractType
@@ -25,7 +26,7 @@ class DatalistType extends AbstractType
 
     public function getParent()
     {
-        return EntityType::class;
+        return TextType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -47,6 +48,7 @@ class DatalistType extends AbstractType
     {
         dump($options);
         $view->vars['class'] = $options['class'];
+        $view->vars['compound'] = false;
         // $view->vars['choices'] = $options['choices'];
     }
 

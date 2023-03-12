@@ -22,16 +22,12 @@ class Category
     #[ORM\Column(type:"string", enumType: CategoryType::class)]
     private CategoryType $type;
 
-    #[ORM\OneToMany(mappedBy: 'defaultCategory', targetEntity: Label::class)]
-    private Collection $labels;
-
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Transaction::class)]
     private Collection $transactions;
 
     public function __construct()
     {
         $this->type  = CategoryType::EXPENSE;
-        $this->labels = new ArrayCollection();
         $this->transactions = new ArrayCollection();
     }
 
@@ -65,36 +61,6 @@ class Category
     public function setType(CategoryType $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Label>
-     */
-    public function getLabels(): Collection
-    {
-        return $this->labels;
-    }
-
-    public function addLabel(Label $label): self
-    {
-        if (!$this->labels->contains($label)) {
-            $this->labels->add($label);
-            $label->setDefaultCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLabel(Label $label): self
-    {
-        if ($this->labels->removeElement($label)) {
-            // set the owning side to null (unless already changed)
-            if ($label->getDefaultCategory() === $this) {
-                $label->setDefaultCategory(null);
-            }
-        }
 
         return $this;
     }
