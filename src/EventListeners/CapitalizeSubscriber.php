@@ -36,7 +36,7 @@ class CapitalizeSubscriber implements EventSubscriberInterface
 
     public function postLoad(LifecycleEventArgs $args): void
     {
-        $this->capitalize($args);
+        //$this->capitalize($args);
     }
 
     private function capitalize(LifecycleEventArgs $args): void

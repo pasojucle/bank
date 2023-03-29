@@ -1,6 +1,7 @@
 <template>
     <tr v-for="transaction in store.list.transaction" :key="transaction.id">
-        <td>{{ transaction.name }}</td>
+        <td>{{ transaction.label.name }}</td>
+        <td class="text-end">{{ transaction.amount }}</td>
         <td><a v-bind:href="path(transaction)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>
 </template>
@@ -26,7 +27,8 @@ export default {
         },
     },
     created() {
-        this.store.getList('transaction');
+        const el = this.store.getDomElement('#v-transactions');
+        this.store.getList('transaction', {'account': el.getAttribute('data-account')});
     },
 }
 </script>

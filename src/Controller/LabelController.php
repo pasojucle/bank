@@ -38,7 +38,13 @@ class LabelController extends AbstractController
             $labelRepository->save($label, true);
 
             $this->labelPresenter->present($label);
-            return new JsonResponse([$this->labelPresenter->viewModel()]);
+            return new JsonResponse([
+                [
+                    'entity' => 'label',
+                    'value' => $this->labelPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [
@@ -60,7 +66,13 @@ class LabelController extends AbstractController
             $labelRepository->save($label, true);
 
             $this->labelPresenter->present($label);
-            return new JsonResponse($this->labelPresenter->viewModel());
+            return new JsonResponse([
+                [
+                    'entity' => 'label',
+                    'value' => $this->labelPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+                ]);
         }
 
         return $this->render('modal/form.html.twig', [

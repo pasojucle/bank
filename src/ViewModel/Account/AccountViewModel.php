@@ -14,6 +14,7 @@ class AccountViewModel
     public string $name = '';
     public string $entityName;
     public string $actualBalance;
+    public string $checkedBalance;
 
     public static function fromAccount(Account $account, ServicesPresenter $services)
     {
@@ -21,8 +22,9 @@ class AccountViewModel
 
         $accountView->entityName = get_class($account);
         $accountView->id = $account->getId();
-        $accountView->name =  mb_convert_case($account->getName(), MB_CASE_TITLE, 'UTF-8');
+        $accountView->name =  $account->getName();
         $accountView->actualBalance = $accountView->getActualBalance($account, $services);
+        $accountView->checkedBalance = $accountView->getCheckedBalance($account, $services);
 
         return $accountView;
     }
@@ -30,6 +32,13 @@ class AccountViewModel
     private function getActualBalance(Account $account, ServicesPresenter $services): string
     {
         $balance = $services->transactionRepository->getActualBalanceByAccount($account);
+
+        return (new Currency($balance))->toString();
+    }
+
+    private function getCheckedBalance(Account $account, ServicesPresenter $services): string
+    {
+        $balance = $services->transactionRepository->getCheckedBalanceByAccount($account);
 
         return (new Currency($balance))->toString();
     }

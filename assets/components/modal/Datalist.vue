@@ -48,6 +48,7 @@ export default {
             if (0 < this.search.id) {
                 this.input = this.search.name;
             }
+            console.log('input', this.input);
         },
         refresh(value) {
             if (this.search && value === this.search.name) {
@@ -98,17 +99,25 @@ export default {
         },
     },
     created() {
+        this.el = this.store.getDomElement('.v-datalist');
         this.store.getList('label').then(() => {
             this.setOptions();
+            const jsonValues = this.el.getAttribute('data-value');
+            let value = null;
+            console.log('jsonValues', jsonValues)
+            if (jsonValues) {
+                value = this.capitalize(Object.values(JSON.parse(this.el.getAttribute('data-value'))).shift());
+                console.log('created', value)
+                this.input = value;
+            }
+            this.selectedLabel = {
+                'id': this.el.getAttribute('data-id'),
+                'label': this.el.getAttribute('data-label'),
+                'name': this.el.getAttribute('data-name'),
+                'required': this.el.getAttribute('data-required'),
+                'value': value,
+            };
         });
-        this.el = this.store.getDomElement('.v-datalist');
-        this.selectedLabel = {
-            'id': this.el.getAttribute('data-id'),
-            'label': this.el.getAttribute('data-label'),
-            'value': this.el.getAttribute('data-value'),
-            'name': this.el.getAttribute('data-name'),
-            'required': this.el.getAttribute('data-required'),
-        };
     },
 }
 </script>

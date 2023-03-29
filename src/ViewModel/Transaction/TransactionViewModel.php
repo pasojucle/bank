@@ -16,6 +16,7 @@ class TransactionViewModel
 
     public string $entityName;
     public ?int $id = null;
+    public ?string $createdAt = null;
     public LabelViewModel $label;
     public CategoryViewModel $category;
     public ?AccountViewModel $debitAccount;
@@ -30,13 +31,15 @@ class TransactionViewModel
 
         $transactionView->entityName = get_class($transaction);
         $transactionView->id = $transaction->getId();
+        $transactionView->createdAt = $transaction->getCreatedAt()->format('Y-m-d');
         $transactionView->label = LabelViewModel::fromLabel($transaction->getLabel());
         $transactionView->category = CategoryViewModel::fromCategory($transaction->getCategory(), $services);
-        $transactionView->debitAccount = ($transaction->getDebitAccount()) ? AccountViewModel::fromAccount($transaction->getDebitAccount()) : null;
-        $transactionView->creditAccount = ($transaction->getCreditAccount()) ?  AccountViewModel::fromAccount($transaction->getCreditAccount()) : null;
+        $transactionView->debitAccount = ($transaction->getDebitAccount()) ? AccountViewModel::fromAccount($transaction->getDebitAccount(), $services) : null;
+        $transactionView->creditAccount = ($transaction->getCreditAccount()) ?  AccountViewModel::fromAccount($transaction->getCreditAccount(), $services) : null;
         $transactionView->amount = (new Currency($transaction->getAmount()))->toString();
         $transactionView->checked = $transaction->isChecked();
         $transactionView->comment = $transaction->getComment();
+        dump($transaction);
 
         return $transactionView;
     }

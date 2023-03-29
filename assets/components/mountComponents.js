@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import Categories from './Categories.vue';
+import Account from './Account.vue';
 import Accounts from './Accounts.vue';
 import Dashboard from './Dashboard.vue';
 import labels from './Labels.vue';
@@ -11,6 +12,10 @@ import Datalist from './modal/Datalist.vue';
 const mountComponents = () => {
     if (document.getElementById('v-categories')) {
         createApp(Categories).mount('#v-categories');
+    }
+    
+    if (document.getElementById('v-account')) {
+        createApp(Account).mount('#v-account');
     }
     
     if (document.getElementById('v-accounts')) {

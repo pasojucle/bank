@@ -39,7 +39,13 @@ class CategoryController extends AbstractController
             $categoryRepository->save($category, true);
 
             $this->categoryPresenter->present($category);
-            return new JsonResponse([$this->categoryPresenter->viewModel()]);
+            return new JsonResponse([
+                [
+                    'entity' => 'category',
+                    'value' => $this->categoryPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [
@@ -60,7 +66,13 @@ class CategoryController extends AbstractController
             $categoryRepository->save($category, true);
 
             $this->categoryPresenter->present($category);
-            return new JsonResponse([$this->categoryPresenter->viewModel()]);
+            return new JsonResponse([
+                [
+                    'entity' => 'category',
+                    'value' => $this->categoryPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [

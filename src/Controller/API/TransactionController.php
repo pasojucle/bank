@@ -2,6 +2,7 @@
 
 namespace App\Controller\API;
 
+use App\Entity\Account;
 use App\Repository\TransactionRepository;
 use App\ViewModel\Transaction\TransactionsPresenter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +18,12 @@ class TransactionController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_transaction_list', methods: ['GET'], options: ['expose' => true])]
-    public function list(): JsonResponse
+    #[Route('/{account}', name: 'api_transaction_list', methods: ['GET'], options: ['expose' => true])]
+    public function list(Account $account): JsonResponse
     {
-        $this->transactionsPresenter->present($this->transactionRepository->findAllASC());
+        $transactions = $this->transactionRepository->findByAccount($account);
+        $this->transactionsPresenter->present($transactions);
+
         return new JsonResponse([
             'list' => $this->transactionsPresenter->viewModel()->transactions,
         ]);

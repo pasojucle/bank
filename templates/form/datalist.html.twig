@@ -1,21 +1,12 @@
 {% block datalist_row %}
-    {% dump(form) %}
-    {# <div class="mb-3 datalist-container">
-        <label for="{{ form.vars.id }}" class="form-label">{{ form.vars.label }}</label>
-        {% dump(form.vars.choices|json_encode) %}"
-        <div class="v-datalist" data-vue-datalist data-form="{{ form.vars.choices|json_encode }}" ></div>
-        <select {{ block('widget_attributes') }}  value="{{ form.vars.value }}" class="form-control"/>
-            {% for choice in form.vars.choices %}
-                <option value="{{ choice.value }}">{{ choice.label }}</option>
-            {% endfor %}
-        </select>
-    </div> #}
-
+    {% dump(form.vars.value) %}
+    {% dump('ici') %}
+    {% set value = (form.vars.value) ? form.vars.value|json_encode : '' %}
     <div class="v-datalist"
         data-vue-datalist
         data-id="{{ form.vars.id }}"
         data-label="{{ form.vars.label }}"
-        data-value="{{ form.vars.value }}"
+        data-value="{{ value }}"
         data-name={{ form.vars.full_name }}>
     </div>
 {% endblock %}

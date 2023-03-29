@@ -46,7 +46,13 @@ class AccountController extends AbstractController
             $accountRepository->save($account, true);
 
             $this->accountPresenter->present($account);
-            return new JsonResponse([$this->accountPresenter->viewModel()]);
+            return new JsonResponse([
+                [
+                    'entity' => 'account',
+                    'value' => $this->accountPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [
@@ -67,7 +73,13 @@ class AccountController extends AbstractController
             $accountRepository->save($account, true);
 
             $this->accountPresenter->present($account);
-            return new JsonResponse([$this->accountPresenter->viewModel()]);
+            return new JsonResponse([
+                [
+                    'entity' => 'account',
+                    'value' => $this->accountPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ]
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [

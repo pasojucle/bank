@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
+use App\ViewModel\Account\AccountPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,17 +17,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
-    public function __construct(private TransactionPresenter $transactionPresenter) {
+    public function __construct(
+        private TransactionPresenter $transactionPresenter,
+        private AccountPresenter $accountPresenter,
+    ) {
         
     }
     
-    #[Route('/', name: 'transaction_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route('/{account}', name: 'transaction_index', methods: ['GET'], options: ['expose' => true])]
+    public function index(int $account): Response
     {
-        return $this->render('transaction/index.html.twig');
+        return $this->render('transaction/index.html.twig', [
+            'account' => $account,
+        ]);
     }
 
-    #[Route('/new/{account}', name: 'transaction_new', methods: ['GET', 'POST'], options: ['expose' => true])]
+    #[Route('/{account}/new', name: 'transaction_new', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function new(Request $request, TransactionRepository $transactionRepository, Account $account): Response
     {
         $transaction = new Transaction();
@@ -42,7 +48,19 @@ class TransactionController extends AbstractController
             $transactionRepository->save($transaction, true);
 
             $this->transactionPresenter->present($transaction);
-            return new JsonResponse([$this->transactionPresenter->viewModel()]);
+            $this->accountPresenter->present($account);
+            return new JsonResponse([
+                [
+                    'entity' => 'transaction',
+                    'value' => $this->transactionPresenter->viewModel(),
+                    'sort' => 'createdAtDESC',
+                ],
+                [
+                    'entity' => 'account',
+                    'value' => $this->accountPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ],
+            ]);
         }
 
         return $this->render('modal/form.html.twig', [
@@ -64,8 +82,21 @@ class TransactionController extends AbstractController
             $transactionRepository->save($transaction, true);
 
             $this->transactionPresenter->present($transaction);
-            return new JsonResponse($this->transactionPresenter->viewModel());
+            $this->accountPresenter->present($transaction->getDebitAccount() ?? $transaction->getCreditAccount());
+            return new JsonResponse([
+                [
+                    'entity' => 'transaction',
+                    'value' => $this->transactionPresenter->viewModel(),
+                    'sort' => 'createdAtDESC',
+                ],
+                [
+                    'entity' => 'account',
+                    'value' => $this->accountPresenter->viewModel(),
+                    'sort' => 'nameASC',
+                ],
+            ]);
         }
+
         $account = $transaction->getDebitAccount() ?? $transaction->getCreditAccount();
 
         return $this->render('modal/form.html.twig', [
