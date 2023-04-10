@@ -1,19 +1,28 @@
 import { mountModalComponents } from '../components/mountComponents.js'
-
+var modalSelector = '[data-bs-toggle="modal-dynamic"]';
 document.addEventListener("DOMContentLoaded", function() {
     initModal();
 });
 
 const initModal = () => {
     console.log('modal-dynamic', document.querySelectorAll('[data-bs-toggle="modal-dynamic"]'));
-    document.querySelectorAll('[data-bs-toggle="modal-dynamic"]').forEach(element => element.addEventListener('click', loadModal));
+    document.querySelectorAll(modalSelector).forEach(element => element.addEventListener('click', (event) => {
+        console.log('addEvent',element,  event.target)
+        if (element !== event.target) return;
+        loadModal(event);
+    }, false));
 }
 
 const loadModal = (event) => {
     event.preventDefault();
-    const modalTarget = event.target.dataset.bsTarget;
-    dispose(modalTarget);
-    const route = event.target.href;
+    let element = (event.target.dataset.bsToggle === 'modal-dynamic') ? event.target : event.target.closest(modalSelector);
+    
+    const modalTarget = element.dataset.bsTarget;
+    console.log('bs-target', event.target)
+    console.log('modalTarget', modalTarget)
+    // dispose(modalTarget);
+
+    const route = element.href;
     fetch(route, {
         headers: {
             'Content-Type': 'text/plain',
@@ -25,11 +34,22 @@ const loadModal = (event) => {
         const htmlModal = htmlElement.querySelector('.modal');
         const options = {'backdrop' : 'static'};
         document.querySelector('body').append(htmlModal);
-        const domModal = new bootstrap.Modal(document.querySelector(modalTarget), options);
+        const modal = new bootstrap.Modal(document.querySelector(modalTarget), options);
+        console.log('modal', modal)
+        const modalEl = modal._element;
+        console.log('modalEl', modalEl)
+        modal.show();
 
-        domModal.show();
+        modalEl.addEventListener('shown.bs.modal', event => {
+            console.log('show', event.target)
+            mountModalComponents();
+        })
 
-        mountModalComponents();
+        modalEl.addEventListener('hidden.bs.modal', event => {
+            console.log('hide', event.target)
+            modal.dispose()
+            modalEl.remove();
+        })
     })
 }
 

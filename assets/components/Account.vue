@@ -1,9 +1,11 @@
 <template>
-
-    <div>{{ account.name }}</div>
-    <div>{{ account.actualBallance }}</div>
-    <div>{{ account.checkedBallance }}</div>
-
+    <div class="text-capitalize">
+        <h1>{{ getAccount('name')}}</h1>
+    </div>
+    <div class="row align-items-baseline">
+        <div class="col-md-4 col-7 fs-1">{{ getAccount('actualBalance') }} € </div>
+        <div class="col-md-3 col-5">{{ getAccount('checkedBalance') }} € <i class="bi bi-check-circle-fill"></i></div>
+    </div>
 </template>
 
 <script>
@@ -16,19 +18,24 @@ export default {
     data() {
         return {
             store,
-            account: '',
+            id: '',
         }
     },
     methods: {
         path(account) {
             return Routing.generate('account_edit', {'id': account.id});
         },
+        getAccount(property) {
+            const account = this.store.listFindById('account', this.id);
+            console.log('account', account)
+            if(account) {
+                return account[property]
+            }
+        }
     },
     created() {
-        const el = this.store.getDomElement('#v-account');
-        this.store.edit('account', {'id': el.getAttribute('data-account')}).then(() => {
-            
-        });
+        this.id = this.store.getDomElement('#v-account').getAttribute('data-account');
+        this.store.edit('account', {'id': this.id});
     },
 }
 </script>

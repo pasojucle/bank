@@ -8,12 +8,12 @@
 
 {% block body %}
 <form method="post">
-    <div class="wrapper wrapper wrapper-medium-width">
-        <div class="wrapper-title">
+    <div class="card">
+        <div class="card-header">
             <h1>Me connecter</h1>
         </div>
-        <div class="block background-green block-small background-color reveal">
-            <div class="block-body">
+        
+            <div class="card-body">
                 {{ form_start(form) }}
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -35,7 +35,6 @@
                     </button>
                 </div>
                 {{ form_end(form) }}
-            </div>
         </div>
     </div>
 

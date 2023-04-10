@@ -15,9 +15,8 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container-sm">
+        <div class="container-xs">
             {% if is_granted('ROLE_USER') %}
-                <div data-bearer={{ app.user.token}}></div>
                 {% include 'nav.html.twig' %}
             {% endif %}
             {% block body %}

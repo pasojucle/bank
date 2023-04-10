@@ -3,15 +3,21 @@
 {% block title %}Libellés{% endblock %}
 
 {% block body %}
-    <h1>Libellés</h1>
-    <a href="{{ path('label_new') }}"  class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un libellé</a>
-    <table  class="table table-striped table-sm">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody id="v-labels" data-vue-labels></tbody>
-    </table>
+<div class="card">
+    <div class="card-header sticky-top top-nav text-bg-light">
+        <h1>Libellés</h1>
+    </div>
+    <div class="card-body">
+        <a href="{{ path('label_new') }}"  class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un libellé</a>
+        <table  class="table table-striped table-sm align-middle">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody id="v-labels" data-vue-labels></tbody>
+        </table>
+    </div>
+</div>   
 {% endblock %}

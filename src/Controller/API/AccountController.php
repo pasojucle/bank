@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/account')]
+#[Route('/json/account')]
 class AccountController extends AbstractController
 {
     public function __construct(
@@ -21,7 +21,7 @@ class AccountController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_account_list', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/', name: 'json_account_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         /** @var User $user */
@@ -32,7 +32,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/etid', name: 'api_account_edit', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/{id}/etid', name: 'json_account_edit', methods: ['GET'], options: ['expose' => true])]
     public function edit(Account $account): JsonResponse
     {
         $this->accountPresenter->present($account);

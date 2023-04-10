@@ -3,3 +3,20 @@
 body {
     background-color: lightgray;
 }
+.container-xs {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.sticky-top.top-nav {
+    top: 56px;
+}
+.btn.btn-sm.btn-outline-primary.dropdown-toggle::after  {
+    content: '\F5D3';
+    font-family: "bootstrap-icons";
+    border-top: unset;
+    border-right: unset;
+    border-bottom: unset;
+    border-left: unset;
+    vertical-align: unset;
+}

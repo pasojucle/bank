@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/category')]
+#[Route('/json/category')]
 class CategoryController extends AbstractController
 {
     public function __construct(
@@ -24,7 +24,7 @@ class CategoryController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_category_list', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/', name: 'json_category_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         $this->categoriesPresenter->present($this->categoryRepository->findAllASC());
@@ -72,7 +72,7 @@ class CategoryController extends AbstractController
 
 
 
-    #[Route('/default/{label}', name: 'api_category_default', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/default/{label}', name: 'json_category_default', methods: ['GET'], options: ['expose' => true])]
     public function defaultCategory(
         Label $label
     ): JsonResponse

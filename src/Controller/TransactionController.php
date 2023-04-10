@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TransactionController extends AbstractController
 {
     public function __construct(
+        private TransactionRepository $transactionRepository,
         private TransactionPresenter $transactionPresenter,
         private AccountPresenter $accountPresenter,
     ) {
@@ -25,7 +26,7 @@ class TransactionController extends AbstractController
     }
     
     #[Route('/{account}', name: 'transaction_index', methods: ['GET'], options: ['expose' => true])]
-    public function index(int $account): Response
+    public function index(Account $account): Response
     {
         return $this->render('transaction/index.html.twig', [
             'account' => $account,
@@ -33,7 +34,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/{account}/new', name: 'transaction_new', methods: ['GET', 'POST'], options: ['expose' => true])]
-    public function new(Request $request, TransactionRepository $transactionRepository, Account $account): Response
+    public function new(Request $request, Account $account): Response
     {
         $transaction = new Transaction();
         $form = $this->createForm(TransactionType::class, $transaction, [
@@ -45,7 +46,7 @@ class TransactionController extends AbstractController
             $transactionType = $request->request->all('transaction')['transactionType'];
             $setAccount = (TransactionType::TRANSACTION_TYPE_DEBIT === (int)$transactionType) ? 'setDebitAccount' : 'setCreditAccount';
             $transaction->$setAccount($account);
-            $transactionRepository->save($transaction, true);
+            $this->transactionRepository->save($transaction, true);
 
             $this->transactionPresenter->present($transaction);
             $this->accountPresenter->present($account);
@@ -71,7 +72,7 @@ class TransactionController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'transaction_edit', methods: ['GET', 'POST'], options: ['expose' => true])]
-    public function edit(Request $request, Transaction $transaction, TransactionRepository $transactionRepository): Response
+    public function edit(Request $request, Transaction $transaction): Response
     {
         $form = $this->createForm(TransactionType::class, $transaction, [
             'action' => $this->generateUrl($request->attributes->get('_route'), ['id' => $transaction->getId()]),
@@ -79,7 +80,7 @@ class TransactionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $transactionRepository->save($transaction, true);
+            $this->transactionRepository->save($transaction, true);
 
             $this->transactionPresenter->present($transaction);
             $this->accountPresenter->present($transaction->getDebitAccount() ?? $transaction->getCreditAccount());
@@ -102,6 +103,28 @@ class TransactionController extends AbstractController
         return $this->render('modal/form.html.twig', [
             'title' => sprintf('Modifier sur le comte %s', $account->getName()),
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/{id}/check', name: 'transaction_check', methods: ['GET'], options: ['expose' => true])]
+    public function check(Transaction $transaction): JsonResponse
+    {
+        $transaction->setChecked(true);
+        $this->transactionRepository->save($transaction, true);
+
+        $this->transactionPresenter->present($transaction);
+        $this->accountPresenter->present($transaction->getDebitAccount() ?? $transaction->getCreditAccount());
+        return new JsonResponse([
+            [
+                'entity' => 'transaction',
+                'value' => $this->transactionPresenter->viewModel(),
+                'sort' => 'createdAtDESC',
+            ],
+            [
+                'entity' => 'account',
+                'value' => $this->accountPresenter->viewModel(),
+                'sort' => 'nameASC',
+            ],
         ]);
     }
 }

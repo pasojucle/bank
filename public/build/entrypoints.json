@@ -3,11 +3,11 @@
     "app": {
       "js": [
         "/build/runtime.js",
-        "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.js",
+        "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.js",
         "/build/app.js"
       ],
       "css": [
-        "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.css",
+        "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.css",
         "/build/app.css"
       ]
     }

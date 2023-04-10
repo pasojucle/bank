@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/label')]
+#[Route('/json/label')]
 class LabelController extends AbstractController
 {
     public function __construct(
@@ -17,7 +17,7 @@ class LabelController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'api_label_list', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/', name: 'json_label_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
         $this->labelsPresenter->present($this->labelRepository->findAllASC());

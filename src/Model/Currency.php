@@ -15,7 +15,7 @@ class Currency
 
     public function toString(): string
     {
-        return number_format($this->getAmount(), 2, ',', ' ') . ' €';
+        return number_format($this->getAmount(), 2, ',', ' ');
     }
 
     public function setAmount(float $amount): self

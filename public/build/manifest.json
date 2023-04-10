@@ -2,10 +2,8 @@
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
   "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-f58e59.css": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-f58e59.css",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-f58e59.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-f58e59.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.css": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.css",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-ddd249.js",
   "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.6959d0d9.woff",
-  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.b2e5aab6.woff2",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.css": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.css",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_bootstrap_dist_js_boo-676e46.js"
+  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.b2e5aab6.woff2"
 }

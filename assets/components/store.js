@@ -5,23 +5,18 @@ import Routing from 'fos-router';
 
 
 export const store = reactive({
-  list: [{
+  list: {
     'account': [],
     'category': [],
     'cluster': [],
     'label': [],
     'transaction': [],
-  }],
-  getAuthToken() {
-    const authToken = document.querySelector('div[data-bearer]');
-    return "Bearer " + authToken.dataset.bearer;
   },
+  needle: null,
   async getList(entity, params = {}) {
-    await fetch(Routing.generate(`api_${entity}_list`, params), {
+    await fetch(Routing.generate(`json_${entity}_list`, params), {
       method: "GET", 
-      headers: {
-        "Authorization": this.getAuthToken(),
-    }})
+    })
     .then(response => response.json())
     .then(data => {
         this.list[entity] = data.list;
@@ -29,15 +24,23 @@ export const store = reactive({
     });
   },
   async edit(entity, params = {}) {
-    await fetch(Routing.generate(`api_${entity}_edit`, params), {
+    await fetch(Routing.generate(`json_${entity}_edit`, params), {
       method: "GET", 
-      headers: {
-        "Authorization": this.getAuthToken(),
-    }})
+    })
     .then(response => response.json())
     .then(data => {
         this.update(data);
         console.log('list', this.list[entity])
+    });
+  },
+  async checkTransaction(id) {
+    await fetch(Routing.generate('transaction_check', {'id': id}), {
+      method: "GET", 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('checkTransaction response', data);
+        this.updateAll(data);
     });
   },
   updateAll(data) {
@@ -50,9 +53,14 @@ export const store = reactive({
       const index = this.list[object.entity].findIndex(item => {
         return (object.value.id === item.id)
       })
-      this.updateList(object.value, object.entity, index);
-      this.list[object.entity].sort(this[object.sort]);
+      if (-1 !== index) {
+        this.updateList(object.value, object.entity, index);
+        this.list[object.entity].sort(this[object.sort]);
+        return;
+      }
+      this.list[object.entity].push(object.value);
     }
+    console.log('update list', this.list)
   },
   updateList(data, entity, index) {
     if (-1 < index) {
@@ -61,9 +69,17 @@ export const store = reactive({
     }
     this.list[entity].push(data);
   },
-  // getEntity(data) {
-  //   return data.entityName.split('\\').pop().toLowerCase();
-  // },
+  listFindById(entity, entityId) {
+    console.log('listFindById', entityId, this.list[entity])
+    return this.list[entity].find(({id}) => id === parseInt(entityId));
+  },
+  listFiltered(entity) {
+    if (null === this.needle) {
+      console.log('list filtered', this.list[entity]);
+      return this.list[entity];
+    }
+    return this.list[entity].filter(item => item.label.name.toLowerCase().includes(this.needle.toLowerCase()) || item.amount.includes(this.needle) || item.createdAtStr.includes(this.needle) );
+  },
   getDomElement(selector) {
     return document.querySelector(selector);
   },

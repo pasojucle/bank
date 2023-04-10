@@ -6,21 +6,15 @@
             </div>
             <div class="card-body">
                 <div class="card-text">
-                    <div class="actual-balance row align-items-end">
-                        <div class="col-3">Réel</div>
-                        <div class="col-9 text-end fs-1">{{ account.actualBalance }}</div>
-                    </div>
-                    <div class="checked-balance row align-items-end">
-                        <div class="col-3">Pointé</div>
-                        <div class="col-9 text-end">{{ account.checkedBalance }}</div>
+                    <div class="d-flex align-items-baseline">
+                        <div class="fs-1">{{ account.actualBalance }}</div>
+                        <div class="ms-auto">{{ account.checkedBalance }} <i class="bi bi-check-circle-fill"></i></div>
                     </div>
                 </div>
-                <!-- <div class="d-flex justify-content-end"> -->
-                    <div class="btn-group mt-2 w-100">
-                        <a v-bind:href="newTransaction(account)" @click.prevent="edit($event)" class="btn btn-light" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Nouvelle opération</a>
-                        <a v-bind:href="transactions(account)" class="btn btn-outline-light">Consulter</a>
-                    </div> 
-                <!-- </div> -->
+                <div class="btn-group mt-2 w-100">
+                    <a v-bind:href="newTransaction(account)" @click.prevent="edit($event)" class="btn btn-light" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Nouvelle opération</a>
+                    <a v-bind:href="transactions(account)" class="btn btn-outline-light">Consulter</a>
+                </div> 
             </div>
         </div>
     </div>

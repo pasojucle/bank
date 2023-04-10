@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/transaction')]
+#[Route('/json/transaction')]
 class TransactionController extends AbstractController
 {
     public function __construct(
@@ -18,7 +18,7 @@ class TransactionController extends AbstractController
     ) {
     }
 
-    #[Route('/{account}', name: 'api_transaction_list', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/{account}', name: 'json_transaction_list', methods: ['GET'], options: ['expose' => true])]
     public function list(Account $account): JsonResponse
     {
         $transactions = $this->transactionRepository->findByAccount($account);
