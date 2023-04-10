@@ -6,21 +6,21 @@ use App\Entity\Account;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
-use App\ViewModel\Account\AccountPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\ViewModel\Transaction\TransactionPresenter;
+use App\ViewModel\Transformer\AccountDTOtransformer;
+use App\ViewModel\Transformer\TransactionDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/transaction')]
 class TransactionController extends AbstractController
 {
     public function __construct(
+        private TransactionDTOTransformer $transactionDTOTransformer,
         private TransactionRepository $transactionRepository,
-        private TransactionPresenter $transactionPresenter,
-        private AccountPresenter $accountPresenter,
+        private AccountDTOtransformer $accountDTOtransformer,
     ) {
         
     }
@@ -48,17 +48,15 @@ class TransactionController extends AbstractController
             $transaction->$setAccount($account);
             $this->transactionRepository->save($transaction, true);
 
-            $this->transactionPresenter->present($transaction);
-            $this->accountPresenter->present($account);
             return new JsonResponse([
                 [
                     'entity' => 'transaction',
-                    'value' => $this->transactionPresenter->viewModel(),
+                    'value' => $this->transactionDTOTransformer->fromTransaction($transaction, $account),
                     'sort' => 'createdAtDESC',
                 ],
                 [
                     'entity' => 'account',
-                    'value' => $this->accountPresenter->viewModel(),
+                    'value' => $this->accountDTOtransformer->fromAccount($account),
                     'sort' => 'nameASC',
                 ],
             ]);
@@ -81,18 +79,16 @@ class TransactionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->transactionRepository->save($transaction, true);
-
-            $this->transactionPresenter->present($transaction);
-            $this->accountPresenter->present($transaction->getDebitAccount() ?? $transaction->getCreditAccount());
+            $account = $transaction->getDebitAccount() ?? $transaction->getCreditAccount();
             return new JsonResponse([
                 [
                     'entity' => 'transaction',
-                    'value' => $this->transactionPresenter->viewModel(),
+                    'value' => $this->transactionDTOTransformer->fromTransaction($transaction, $account),
                     'sort' => 'createdAtDESC',
                 ],
                 [
                     'entity' => 'account',
-                    'value' => $this->accountPresenter->viewModel(),
+                    'value' => $this->accountDTOtransformer->fromAccount($account),
                     'sort' => 'nameASC',
                 ],
             ]);
@@ -111,18 +107,17 @@ class TransactionController extends AbstractController
     {
         $transaction->setChecked(true);
         $this->transactionRepository->save($transaction, true);
+        $account = $transaction->getDebitAccount() ?? $transaction->getCreditAccount();
 
-        $this->transactionPresenter->present($transaction);
-        $this->accountPresenter->present($transaction->getDebitAccount() ?? $transaction->getCreditAccount());
         return new JsonResponse([
             [
                 'entity' => 'transaction',
-                'value' => $this->transactionPresenter->viewModel(),
+                'value' => $this->transactionDTOTransformer->fromTransaction($transaction, $account),
                 'sort' => 'createdAtDESC',
             ],
             [
                 'entity' => 'account',
-                'value' => $this->accountPresenter->viewModel(),
+                'value' => $this->accountDTOtransformer->fromAccount($account),
                 'sort' => 'nameASC',
             ],
         ]);

@@ -19,7 +19,7 @@ class Transaction
     private DateTimeImmutable $createdAt;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
-    private Label $label;
+    private ?Label $label;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     private ?Category $category = null;
@@ -66,7 +66,7 @@ class Transaction
         return $this->label;
     }
 
-    public function setLabel(Label $label): self
+    public function setLabel(?Label $label): self
     {
         $this->label = $label;
 

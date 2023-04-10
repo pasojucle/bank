@@ -5,18 +5,18 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use App\ViewModel\Category\CategoryPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\ViewModel\Transformer\CategoryDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/category')]
 class CategoryController extends AbstractController
 {
     public function __construct(
-        private CategoryPresenter $categoryPresenter,
+        private CategoryDTOTransformer $categoryDTOTransformer,
     ) {
     }
     
@@ -38,11 +38,10 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
 
-            $this->categoryPresenter->present($category);
             return new JsonResponse([
                 [
                     'entity' => 'category',
-                    'value' => $this->categoryPresenter->viewModel(),
+                    'value' => $this->categoryDTOTransformer->fromCategory($category),
                     'sort' => 'nameASC',
                 ]
             ]);
@@ -65,11 +64,10 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
 
-            $this->categoryPresenter->present($category);
             return new JsonResponse([
                 [
                     'entity' => 'category',
-                    'value' => $this->categoryPresenter->viewModel(),
+                    'value' => $this->categoryDTOTransformer->fromCategory($category),
                     'sort' => 'nameASC',
                 ]
             ]);

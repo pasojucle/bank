@@ -59,6 +59,7 @@ export const store = reactive({
         return;
       }
       this.list[object.entity].push(object.value);
+      this.list[object.entity].sort(this[object.sort]);
     }
     console.log('update list', this.list)
   },

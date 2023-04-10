@@ -65,11 +65,9 @@ export default {
             this.selectedLabel.value = id;
         },
         async getDefaultCategory() {
-            await fetch(Routing.generate(`api_category_default`, {'label': this.search.id}), {
+            await fetch(Routing.generate(`json_category_default`, {'label': this.search.id}), {
                 method: "GET", 
-                headers: {
-                    "Authorization": this.store.getAuthToken(),
-            }})
+              })
             .then(response => response.json())
             .then(data => {
                 if (data.category) {

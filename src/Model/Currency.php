@@ -20,7 +20,7 @@ class Currency
 
     public function setAmount(float $amount): self
     {
-        $this->amount = $amount * 100;
+        $this->amount = (int) $amount * 100;
         return $this;
     }
 

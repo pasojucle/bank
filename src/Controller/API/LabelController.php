@@ -4,6 +4,7 @@ namespace App\Controller\API;
 
 use App\Repository\LabelRepository;
 use App\ViewModel\Label\LabelsPresenter;
+use App\ViewModel\Transformer\LabelDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LabelController extends AbstractController
 {
     public function __construct(
-        private LabelsPresenter $labelsPresenter,
+        private LabelDTOTransformer $labelDTOTransformer,
         private LabelRepository $labelRepository
     ) {
     }
@@ -20,9 +21,8 @@ class LabelController extends AbstractController
     #[Route('/', name: 'json_label_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
-        $this->labelsPresenter->present($this->labelRepository->findAllASC());
         return new JsonResponse([
-            'list' => $this->labelsPresenter->viewModel()->labels,
+            'list' => $this->labelDTOTransformer->fromLabels($this->labelRepository->findAllASC()),
         ]);
     }
 }

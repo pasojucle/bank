@@ -2,24 +2,23 @@
 
 namespace App\Controller\API;
 
+use App\Entity\User;
 use App\Entity\Label;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use App\ViewModel\Category\CategoryPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\ViewModel\Category\CategoriesPresenter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\ViewModel\Transformer\CategoryDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/json/category')]
 class CategoryController extends AbstractController
 {
     public function __construct(
-        private CategoriesPresenter $categoriesPresenter,
-        private CategoryPresenter $categoryPresenter,
+        private CategoryDTOTransformer $categoryDTOTransformer,
         private CategoryRepository $categoryRepository
     ) {
     }
@@ -27,18 +26,16 @@ class CategoryController extends AbstractController
     #[Route('/', name: 'json_category_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
-        $this->categoriesPresenter->present($this->categoryRepository->findAllASC());
         return new JsonResponse([
-            'list' => $this->categoriesPresenter->viewModel()->categories,
+            'list' => $this->categoryDTOTransformer->fromCategories($this->categoryRepository->findAllASC()),
         ]);
     }
 
     #[Route('/{id}', name: 'api_category_show', methods: ['GET'])]
     public function show(Category $category): JsonResponse
     {
-        $this->categoryPresenter->present($category);
         return new JsonResponse([
-            'category' => $this->categoryPresenter->viewModel(),
+            'category' => $this->categoryDTOTransformer->fromCategory($category),
         ]);
     }
 
@@ -77,9 +74,10 @@ class CategoryController extends AbstractController
         Label $label
     ): JsonResponse
     {
-        $this->categoryPresenter->present($this->categoryRepository->findDefaultByLabel($label, $this->getUser()));
+        /** @var User $user */
+        $user = $this->getUser();
         return new JsonResponse([
-            'category' => $this->categoryPresenter->viewModel(),
+            'category' => $this->categoryDTOTransformer->fromCategory($this->categoryRepository->findDefaultByLabel($label, $user)),
         ]);
     }
 }

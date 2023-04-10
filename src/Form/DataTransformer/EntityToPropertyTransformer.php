@@ -16,7 +16,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
 
     public function __construct(
         private ObjectManager $em, 
-        private string $class,
+        private readOnly string $class,
         private $primaryKey = 'id', 
         private $newTagPrefix = '__',)
     {
@@ -24,15 +24,9 @@ class EntityToPropertyTransformer implements DataTransformerInterface
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * Transform entity to array
-     *
-     * @param mixed $entity
-     * @return array
-     */
-    public function transform($entity)
-    {dump('transform');
-        dump($entity);
+
+    public function transform($entity): ?array
+    {
         $data = [];
         if (empty($entity)) {
             return null;

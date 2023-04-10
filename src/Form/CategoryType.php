@@ -31,6 +31,7 @@ class CategoryType extends AbstractType
                     EnumCategoryType::REVENUE => 'category_type.revenu',
                     EnumCategoryType::EXPENSE => 'category_type.expense',
                     EnumCategoryType::SAVING => 'category_type.saving',
+                    default => '',
                 },
             ])
         ;

@@ -6,17 +6,17 @@ use App\Entity\User;
 use App\Entity\Account;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
-use App\ViewModel\Account\AccountPresenter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\ViewModel\Transformer\AccountDTOtransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/account')]
 class AccountController extends AbstractController
 {
-    public function __construct(private AccountPresenter $accountPresenter)
+    public function __construct(private AccountDTOtransformer $accountDTOtransformer)
     {
         
     }
@@ -45,11 +45,10 @@ class AccountController extends AbstractController
         if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
             $accountRepository->save($account, true);
 
-            $this->accountPresenter->present($account);
             return new JsonResponse([
                 [
                     'entity' => 'account',
-                    'value' => $this->accountPresenter->viewModel(),
+                    'value' => $this->accountDTOtransformer->fromAccount($account),
                     'sort' => 'nameASC',
                 ]
             ]);
@@ -72,11 +71,11 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $accountRepository->save($account, true);
 
-            $this->accountPresenter->present($account);
+
             return new JsonResponse([
                 [
                     'entity' => 'account',
-                    'value' => $this->accountPresenter->viewModel(),
+                    'value' => $this->accountDTOtransformer->fromAccount($account),
                     'sort' => 'nameASC',
                 ]
             ]);

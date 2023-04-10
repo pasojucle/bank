@@ -6,6 +6,7 @@ use App\Entity\Label;
 use App\Form\LabelType;
 use App\Repository\LabelRepository;
 use App\ViewModel\Label\LabelPresenter;
+use App\ViewModel\Transformer\LabelDTOTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/label')]
 class LabelController extends AbstractController
 {
-    public function __construct(private LabelPresenter $labelPresenter) {
+    public function __construct(private LabelDTOTransformer $labelDTOTransformer ) {
         
     }
     
@@ -37,11 +38,10 @@ class LabelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $labelRepository->save($label, true);
 
-            $this->labelPresenter->present($label);
             return new JsonResponse([
                 [
                     'entity' => 'label',
-                    'value' => $this->labelPresenter->viewModel(),
+                    'value' => $this->labelDTOTransformer->fromLabel($label),
                     'sort' => 'nameASC',
                 ]
             ]);
@@ -65,11 +65,10 @@ class LabelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $labelRepository->save($label, true);
 
-            $this->labelPresenter->present($label);
             return new JsonResponse([
                 [
                     'entity' => 'label',
-                    'value' => $this->labelPresenter->viewModel(),
+                    'value' => $this->labelDTOTransformer->fromLabel($label),
                     'sort' => 'nameASC',
                 ]
                 ]);

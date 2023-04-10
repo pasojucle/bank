@@ -4,16 +4,16 @@ namespace App\Controller\API;
 
 use App\Entity\Account;
 use App\Repository\TransactionRepository;
-use App\ViewModel\Transaction\TransactionsPresenter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\ViewModel\Transformer\TransactionDTOTransformer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/json/transaction')]
 class TransactionController extends AbstractController
 {
     public function __construct(
-        private TransactionsPresenter $transactionsPresenter,
+        private TransactionDTOTransformer $transactionDTOTransformer,
         private TransactionRepository $transactionRepository
     ) {
     }
@@ -22,10 +22,9 @@ class TransactionController extends AbstractController
     public function list(Account $account): JsonResponse
     {
         $transactions = $this->transactionRepository->findByAccount($account);
-        $this->transactionsPresenter->present($transactions);
 
         return new JsonResponse([
-            'list' => $this->transactionsPresenter->viewModel()->transactions,
+            'list' => $this->transactionDTOTransformer->fromTransactions($transactions, $account),
         ]);
     }
 }
