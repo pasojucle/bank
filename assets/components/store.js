@@ -12,7 +12,10 @@ export const store = reactive({
     'label': [],
     'transaction': [],
   },
-  needle: null,
+  transactionsFilter: {
+    needle: null,
+    checked: false
+  },
   async getList(entity, params = {}) {
     await fetch(Routing.generate(`json_${entity}_list`, params), {
       method: "GET", 
@@ -75,11 +78,28 @@ export const store = reactive({
     return this.list[entity].find(({id}) => id === parseInt(entityId));
   },
   listFiltered(entity) {
-    if (null === this.needle) {
-      console.log('list filtered', this.list[entity]);
+    if (null === this.transactionsFilter.needle && !this.transactionsFilter.checked ) {
       return this.list[entity];
     }
-    return this.list[entity].filter(item => item.label.name.toLowerCase().includes(this.needle.toLowerCase()) || item.amount.includes(this.needle) || item.createdAtStr.includes(this.needle) );
+    return this.list[entity].filter(transaction => this.filterNeedle(transaction) && this.filterChecked(transaction));
+  },
+  filterNeedle(transaction) {
+    if (null !== this.transactionsFilter.needle && transaction.label.name.toLowerCase().includes(this.transactionsFilter.needle.toLowerCase()) || transaction.amount.includes(this.transactionsFilter.needle) || transaction.createdAtStr.includes(this.transactionsFilter.needle)) {
+      return true;
+    }
+    if (null === this.transactionsFilter.needle) {
+      return true;
+    }
+    return false;
+  },
+  filterChecked(transaction) {
+    if (transaction.checked && this.transactionsFilter.checked) {
+      return true;
+    }
+    if (!this.transactionsFilter.checked) {
+      return true;
+    }
+    return false;
   },
   getDomElement(selector) {
     return document.querySelector(selector);

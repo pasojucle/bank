@@ -7,14 +7,7 @@
     <div class="card">
         <div class="card-header sticky-top top-nav text-bg-light">
             <div id="v-account" data-vue-account data-account="{{ account.id }}"></div>
-            <nav class="nav bg-body-tertiary nav-pills">
-                <div class="nav-link">
-                    <a href="{{ path('transaction_new', {'account': account.id }) }}" class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Nouvelle opération</a>
-                </div>
-                <div class="nav-link">
-                    <div id="v-search" data-vue-search data-list="transaction"></div>
-                </div>
-            </nav>
+            <div id="v-transactions-filter" data-vue-transactions-filter></div>
         </div>
         <div class="card-body">
 

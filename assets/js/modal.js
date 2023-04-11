@@ -8,7 +8,7 @@ const initModal = () => {
     console.log('modal-dynamic', document.querySelectorAll('[data-bs-toggle="modal-dynamic"]'));
     document.querySelectorAll(modalSelector).forEach(element => element.addEventListener('click', (event) => {
         console.log('addEvent',element,  event.target)
-        if (element !== event.target) return;
+        // if (element !== event.target) return;
         loadModal(event);
     }, false));
 }

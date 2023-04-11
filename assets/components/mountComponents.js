@@ -5,7 +5,7 @@ import Accounts from './Accounts.vue';
 import Dashboard from './Dashboard.vue';
 import labels from './Labels.vue';
 import Transactions from './Transactions.vue';
-import Search from './Search.vue';
+import TransactionsFilter from './TransactionsFilter.vue';
 
 import SubmitModal from './modal/Submit.vue';
 import Datalist from './modal/Datalist.vue';
@@ -35,8 +35,8 @@ const mountComponents = () => {
         createApp(Transactions).mount('#v-transactions');
     }
     
-    if (document.getElementById('v-search')) {
-        createApp(Search).mount('#v-search');
+    if (document.getElementById('v-transactions-filter')) {
+        createApp(TransactionsFilter).mount('#v-transactions-filter');
     }
 }
 

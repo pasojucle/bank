@@ -1,6 +1,4 @@
 {% block datalist_row %}
-    {% dump(form.vars.value) %}
-    {% dump('ici') %}
     {% set value = (form.vars.value) ? form.vars.value|json_encode : '' %}
     <div class="v-datalist"
         data-vue-datalist
