@@ -93,7 +93,7 @@ export const store = reactive({
     return false;
   },
   filterChecked(transaction) {
-    if (transaction.checked && this.transactionsFilter.checked) {
+    if (!transaction.checked && this.transactionsFilter.checked) {
       return true;
     }
     if (!this.transactionsFilter.checked) {
