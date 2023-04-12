@@ -9,7 +9,7 @@
                 <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu">
                     <li><a :data-id="(transaction.id)" @click.prevent="check($event)" class="dropdown-item" role="button"><i class="bi bi-check2-square"></i> Pointer</a></li>
-                    <li><a v-bind:href="pathEdit(transaction)" @click.prevent="edit($event)" class="dropdown-item" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-pencil-square"></i> Modifier</a></li>
+                    <li><a :href="pathEdit(transaction)" @click.prevent="edit($event)" class="dropdown-item" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-pencil-square"></i> Modifier</a></li>
                 </ul>
             </div>
         </td>

@@ -1,7 +1,7 @@
 <template>
     <nav class="nav bg-body-tertiary nav-pills">
         <div class="nav-link px-0">
-            <a href="{{ path('transaction_new', {'account': account.id }) }}" class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouvelle opération</span></a>
+            <a :href="pathNew()" class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouvelle opération</span></a>
         </div>
         <div class="nav-link pe-2 ms-auto">
             <input @click="handleChecked($event)" type="checkbox" class="btn-sm btn-check" id="btn-check-outlined" autocomplete="off">
@@ -19,17 +19,26 @@
 <script>
 const routes = require('../../web/js/fos_js_routes.json');
 import { store } from './store.js'
+import Routing from 'fos-router';
 
 export default {
     data() {
         return {
-            store
+            store,
+            account: '',
         }
     },
     methods: {
+        pathNew() {
+            return Routing.generate('transaction_new', {'account': this.account});
+        },
         handleChecked(event) {
             this.store.transactionsFilter.checked =  event.target.checked;
         }
-    }
+    },
+    created() {
+        const el = this.store.getDomElement('#v-transactions-filter');
+        this.account = el.getAttribute('data-account');
+    },
 }
 </script>
