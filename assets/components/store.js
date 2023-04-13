@@ -8,11 +8,10 @@ export const store = reactive({
   list: {
     'account': [],
     'category': [],
-    'cluster': [],
     'label': [],
     'transaction': [],
   },
-  transactionsFilter: {
+  filter: {
     needle: null,
     checked: false
   },
@@ -34,16 +33,6 @@ export const store = reactive({
     .then(data => {
         this.update(data);
         console.log('list', this.list[entity])
-    });
-  },
-  async checkTransaction(id) {
-    await fetch(Routing.generate('transaction_check', {'id': id}), {
-      method: "GET", 
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('checkTransaction response', data);
-        this.updateAll(data);
     });
   },
   updateAll(data) {
@@ -77,26 +66,42 @@ export const store = reactive({
     console.log('listFindById', entityId, this.list[entity])
     return this.list[entity].find(({id}) => id === parseInt(entityId));
   },
+  async transactionCheck(id) {
+    await fetch(Routing.generate('transaction_check', {'id': id}), {
+      method: "GET", 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('checkTransaction response', data);
+        this.updateAll(data);
+    });
+  },
   listFiltered(entity) {
-    if (null === this.transactionsFilter.needle && !this.transactionsFilter.checked ) {
+    if (null === this.filter.needle ) {
       return this.list[entity];
     }
-    return this.list[entity].filter(transaction => this.filterNeedle(transaction) && this.filterChecked(transaction));
+    return this.list[entity].filter(item => item.name.toLowerCase().includes(this.filter.needle.toLowerCase()));
   },
-  filterNeedle(transaction) {
-    if (null !== this.transactionsFilter.needle && transaction.label.name.toLowerCase().includes(this.transactionsFilter.needle.toLowerCase()) || transaction.amount.includes(this.transactionsFilter.needle) || transaction.createdAtStr.includes(this.transactionsFilter.needle)) {
+  transactionListFiltered() {
+    if (null === this.filter.needle && !this.filter.checked ) {
+      return this.list['transaction'];
+    }
+    return this.list['transaction'].filter(transaction => this.transactionFilterNeedle(transaction) && this.transactionFilterChecked(transaction));
+  },
+  transactionFilterNeedle(transaction) {
+    if (null !== this.filter.needle && transaction.label.name.toLowerCase().includes(this.filter.needle.toLowerCase()) || transaction.amount.includes(this.filter.needle) || transaction.createdAtStr.includes(this.filter.needle)) {
       return true;
     }
-    if (null === this.transactionsFilter.needle) {
+    if (null === this.filter.needle) {
       return true;
     }
     return false;
   },
-  filterChecked(transaction) {
-    if (!transaction.checked && this.transactionsFilter.checked) {
+  transactionFilterChecked(transaction) {
+    if (!transaction.checked && this.filter.checked) {
       return true;
     }
-    if (!this.transactionsFilter.checked) {
+    if (!this.filter.checked) {
       return true;
     }
     return false;

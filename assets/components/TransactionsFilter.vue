@@ -10,7 +10,7 @@
         <div class="nav-link px-0">
             <div class="input-group input-group-sm flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-                <input  v-model="store.transactionsFilter.needle" class="form-control form-control-sm" type="search" placeholder="Rechercher" aria-label="Search">
+                <input v-model="store.filter.needle" class="form-control form-control-sm" type="search" placeholder="Rechercher" aria-label="Search">
             </div>
         </div>
     </nav> 
@@ -33,7 +33,7 @@ export default {
             return Routing.generate('transaction_new', {'account': this.account});
         },
         handleChecked(event) {
-            this.store.transactionsFilter.checked =  event.target.checked;
+            this.store.filter.checked = event.target.checked;
         }
     },
     created() {

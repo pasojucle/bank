@@ -1,5 +1,5 @@
 <template>
-    <tr v-for="label in store.list.label" :key="label.id">
+    <tr v-for="label in store.listFiltered('label')" :key="label.id">
         <td>{{ label.name }}</td>
         <td><a v-bind:href="path(label)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>

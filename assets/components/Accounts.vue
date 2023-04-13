@@ -1,5 +1,5 @@
 <template>
-    <tr v-for="account in store.list.account" :key="account.id">
+    <tr v-for="account in store.listFiltered('account')" :key="account.id">
         <td>{{ account.name }}</td>
         <td><a v-bind:href="path(account)" @click.prevent="edit($event)" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Modifier</a></td>
     </tr>

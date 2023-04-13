@@ -1,5 +1,5 @@
 <template>
-    <tr v-for="transaction in store.listFiltered('transaction')" :key="transaction.id">
+    <tr v-for="transaction in store.transactionListFiltered()" :key="transaction.id">
         <td>{{ transaction.createdAtStr }}</td>
         <td>{{ transaction.label.name }}</td>
         <td class="text-end">{{ transaction.amount }}</td>
@@ -36,8 +36,7 @@ export default {
             loadModal(event);
         },
         check(event) {
-            console.log(event.target)
-            this.store.checkTransaction(event.target.dataset.id);
+            this.store.transactionCheck(event.target.dataset.id);
         },
     },
     created() {

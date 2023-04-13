@@ -3,7 +3,8 @@ import Categories from './Categories.vue';
 import Account from './Account.vue';
 import Accounts from './Accounts.vue';
 import Dashboard from './Dashboard.vue';
-import labels from './Labels.vue';
+import Labels from './Labels.vue';
+import SearchFilter from './SearchFilter.vue';
 import Transactions from './Transactions.vue';
 import TransactionsFilter from './TransactionsFilter.vue';
 
@@ -28,7 +29,10 @@ const mountComponents = () => {
     }
     
     if (document.getElementById('v-labels')) {
-        createApp(labels).mount('#v-labels');
+        createApp(Labels).mount('#v-labels');
+    }
+    if (document.getElementById('v-search-filter')) {
+        createApp(SearchFilter).mount('#v-search-filter');
     }
     
     if (document.getElementById('v-transactions')) {

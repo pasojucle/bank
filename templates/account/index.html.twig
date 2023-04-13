@@ -6,9 +6,16 @@
 <div class="card">
     <div class="card-header sticky-top top-nav text-bg-light">
         <h1>Comptes</h1>
+        <nav class="nav bg-body-tertiary nav-pills">
+            <div class="nav-link px-0">
+                <a href="{{ path('account_new') }}"  class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouveau compte</span></a>
+            </div>
+            <div class="nav-link ms-auto">
+                <div id="v-search-filter" data-vue-search-filter></div>
+            </div>
+        </nav>
     </div>
     <div class="card-body">
-        <a href="{{ path('account_new') }}" class="btn btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button">Ajouter un compte</a>
         <table class="table table-striped table-sm align-middle">
             <thead>
                 <tr>
