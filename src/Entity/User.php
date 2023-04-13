@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
+    #[ORM\ManyToMany(targetEntity: Account::class, mappedBy: 'users')]
     private Collection $accounts;
 
     public function __construct()
@@ -132,7 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->accounts->contains($account)) {
             $this->accounts->add($account);
-            $account->setUser($this);
+            $account->addUser($this);
         }
 
         return $this;
@@ -141,12 +141,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAccount(Account $account): self
     {
         if ($this->accounts->removeElement($account)) {
-            // set the owning side to null (unless already changed)
-            if ($account->getUser() === $this) {
-                $account->setUser(null);
-            }
+            $account->removeUser($this);
         }
 
         return $this;
     }
+
 }

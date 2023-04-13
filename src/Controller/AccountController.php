@@ -36,7 +36,7 @@ class AccountController extends AbstractController
         $account = new Account();
         /** @var User $user */
         $user = $this->getUser();
-        $account->setUser($user);
+        $account->addUser($user);
         $form = $this->createForm(AccountType::class, $account, [
             'action' => $this->generateUrl($request->attributes->get('_route')),
         ]);

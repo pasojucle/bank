@@ -48,10 +48,11 @@ class AccountRepository extends ServiceEntityRepository
     public function findByUser(?User $user): array
     {
         return $this->createQueryBuilder('a')
-            // ->andWhere(
-            //     (new Expr)->eq('a.user', ':user')
-            // )
-            // ->setParameter('user', $user)
+            ->join('a.users', 'u')
+            ->andWhere(
+                (new Expr)->eq('u', ':user')
+            )
+            ->setParameter('user', $user)
             ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult()

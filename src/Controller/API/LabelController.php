@@ -3,7 +3,6 @@
 namespace App\Controller\API;
 
 use App\Repository\LabelRepository;
-use App\ViewModel\Label\LabelsPresenter;
 use App\ViewModel\Transformer\LabelDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +20,11 @@ class LabelController extends AbstractController
     #[Route('/', name: 'json_label_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
+        /** @ var User $user */
+        $user = $this->getUser();
+
         return new JsonResponse([
-            'list' => $this->labelDTOTransformer->fromLabels($this->labelRepository->findAllASC()),
+            'list' => $this->labelDTOTransformer->fromLabels($this->labelRepository->findByUser($user)),
         ]);
     }
 }

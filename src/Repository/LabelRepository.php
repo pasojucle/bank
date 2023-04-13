@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Label;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Label>
@@ -43,9 +45,15 @@ class LabelRepository extends ServiceEntityRepository
     /**
     * @return Label[] Returns an array of Label objects
     */
-    public function findAllASC(): array
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('l')
+        ->join('l.account', 'a')
+        ->join('a.users', 'u')
+            ->andWhere(
+                (new Expr)->eq('u', ':user')
+            )
+            ->setParameter('user', $user)
             ->orderBy('l.name', 'ASC')
             ->getQuery()
             ->getResult()

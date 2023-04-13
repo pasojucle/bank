@@ -21,6 +21,9 @@ class Label
     #[ORM\OneToMany(mappedBy: 'label', targetEntity: Transaction::class)]
     private Collection $transactions;
 
+    #[ORM\ManyToOne(inversedBy: 'labels')]
+    private ?Account $account = null;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
@@ -74,6 +77,18 @@ class Label
                 $transaction->setLabel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccount(): ?Account
+    {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): self
+    {
+        $this->account = $account;
 
         return $this;
     }

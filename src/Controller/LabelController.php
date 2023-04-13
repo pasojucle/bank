@@ -26,34 +26,6 @@ class LabelController extends AbstractController
         return $this->render('label/index.html.twig');
     }
 
-    #[Route('/new', name: 'label_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, LabelRepository $labelRepository): Response
-    {
-        $label = new Label();
-        $form = $this->createForm(LabelType::class, $label, [
-            'action' => $this->generateUrl($request->attributes->get('_route')),
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $labelRepository->save($label, true);
-
-            return new JsonResponse([
-                [
-                    'entity' => 'label',
-                    'value' => $this->labelDTOTransformer->fromLabel($label),
-                    'sort' => 'nameASC',
-                ]
-            ]);
-        }
-
-        return $this->render('modal/form.html.twig', [
-            'title' => 'Créer un Libellé',
-            'form' => $form->createView(),
-        ]);
-    }
-
-
     #[Route('/{id}/edit', name: 'label_edit', methods: ['GET', 'POST'], options: ['expose' => true])]
     public function edit(Request $request, Label $label, LabelRepository $labelRepository): Response
     {
