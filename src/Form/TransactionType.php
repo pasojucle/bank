@@ -54,7 +54,8 @@ class TransactionType extends AbstractType
                 'mapped' => false,
             ])
             ->add('comment', TextType::class, [
-                'label' => 'Commentaire'
+                'label' => 'Commentaire',
+                'required' => false,
             ])
 
         ;
