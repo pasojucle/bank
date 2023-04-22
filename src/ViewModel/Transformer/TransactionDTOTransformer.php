@@ -7,14 +7,16 @@ namespace App\ViewModel\Transformer;
 use App\Entity\Account;
 use App\Model\Currency;
 use App\Entity\Transaction;
+use App\Service\TransactionService;
 use App\ViewModel\TransactionViewModel;
 
 class TransactionDTOTransformer
 {
     public function __construct(
-        private AccountDTOtransformer $accountDTOtransformer,
+        private AccountDTOTransformer $accountDTOtransformer,
         private LabelDTOTransformer $labelDTOTransformer,
-        private CategoryDTOTransformer $categoryDTOTransformer
+        private CategoryDTOTransformer $categoryDTOTransformer,
+        private TransactionService $transactionService
     )
     {
         
@@ -32,7 +34,7 @@ class TransactionDTOTransformer
         $transactionView->category = $this->categoryDTOTransformer->fromCategory($transaction->getCategory());
         $transactionView->debitAccount = ($transaction->getDebitAccount()) ? $this->accountDTOtransformer->fromAccount($transaction->getDebitAccount()) : null;
         $transactionView->creditAccount = ($transaction->getCreditAccount()) ?  $this->accountDTOtransformer->fromAccount($transaction->getCreditAccount()) : null;
-        $transactionView->amount = $this->getAmount($transaction, $account);
+        $transactionView->amount = $this->transactionService->getAmount($transaction, $account);
         $transactionView->checked = $transaction->isChecked();
         $transactionView->checkedToStr = ($transaction->isChecked()) ? 'bi bi-check-circle-fill' : 'bi bi-check-circle';
         $transactionView->comment = $transaction->getComment();
@@ -49,11 +51,5 @@ class TransactionDTOTransformer
         }
 
         return $transactionsView;
-    }
-
-    private function getAmount(Transaction $transaction, Account $account): string
-    {
-        $symbol = ($account === $transaction->getDebitAccount()) ? '- ' : '';
-        return $symbol . (new Currency($transaction->getAmount()))->toString();
     }
 }

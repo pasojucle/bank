@@ -36,7 +36,7 @@ final class Version20230220190049 extends AbstractMigration
         ];
 
         foreach($categories as $category) {
-            $this->addSql('INSERT INTO `category` (`name`, `type`) VALUES (:name, :type)', $category);
+            // $this->addSql('INSERT INTO `category` (`name`, `type`) VALUES (:name, :type)', $category);
         }
     }
 

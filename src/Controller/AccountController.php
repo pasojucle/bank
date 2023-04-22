@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\ViewModel\Transformer\AccountDTOtransformer;
+use App\ViewModel\Transformer\AccountDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/account')]
 class AccountController extends AbstractController
 {
-    public function __construct(private AccountDTOtransformer $accountDTOtransformer)
+    public function __construct(private AccountDTOTransformer $accountDTOtransformer)
     {
         
     }

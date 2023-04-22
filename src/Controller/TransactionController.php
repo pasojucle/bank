@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\ViewModel\Transformer\AccountDTOtransformer;
+use App\ViewModel\Transformer\AccountDTOTransformer;
 use App\ViewModel\Transformer\TransactionDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -20,7 +20,7 @@ class TransactionController extends AbstractController
     public function __construct(
         private TransactionDTOTransformer $transactionDTOTransformer,
         private TransactionRepository $transactionRepository,
-        private AccountDTOtransformer $accountDTOtransformer,
+        private AccountDTOTransformer $accountDTOtransformer,
     ) {
         
     }

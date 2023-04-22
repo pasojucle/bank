@@ -9,7 +9,7 @@ use App\Model\Currency;
 use App\Repository\TransactionRepository;
 use App\ViewModel\AccountViewModel;
 
-class AccountDTOtransformer
+class AccountDTOTransformer
 {
     public function __construct(private TransactionRepository $transactionRepository)
     {

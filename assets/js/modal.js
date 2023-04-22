@@ -1,4 +1,5 @@
 import { mountModalComponents } from '../components/mountComponents.js'
+import { initTableCheck } from './table_check.js';
 var modalSelector = '[data-bs-toggle="modal-dynamic"]';
 document.addEventListener("DOMContentLoaded", function() {
     initModal();
@@ -43,6 +44,7 @@ const loadModal = (event) => {
         modalEl.addEventListener('shown.bs.modal', event => {
             console.log('show', event.target)
             mountModalComponents();
+            initTableCheck();
         })
 
         modalEl.addEventListener('hidden.bs.modal', event => {

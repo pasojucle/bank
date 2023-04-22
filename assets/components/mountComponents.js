@@ -5,6 +5,7 @@ import Accounts from './Accounts.vue';
 import Dashboard from './Dashboard.vue';
 import Labels from './Labels.vue';
 import SearchFilter from './SearchFilter.vue';
+import Schedules from './Schedules.vue';
 import Transactions from './Transactions.vue';
 import TransactionsFilter from './TransactionsFilter.vue';
 
@@ -37,6 +38,10 @@ const mountComponents = () => {
     
     if (document.getElementById('v-transactions')) {
         createApp(Transactions).mount('#v-transactions');
+    }
+    
+    if (document.getElementById('v-schedules')) {
+        createApp(Schedules).mount('#v-schedules');
     }
     
     if (document.getElementById('v-transactions-filter')) {

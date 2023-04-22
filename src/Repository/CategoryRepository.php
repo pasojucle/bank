@@ -59,12 +59,14 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
         ->join('c.transactions', 't')
         ->leftJoin('t.creditAccount', 'credit')
+        ->leftJoin('credit.users', 'creditUser')
         ->leftJoin('t.debitAccount', 'debit')
+        ->leftJoin('debit.users', 'debitUser')
             ->andWhere(
                 (new Expr())->eq('t.label', ':label'),
                 (new Expr())->orX(
-                    (new Expr())->eq('credit.user', ':user'),
-                    (new Expr())->eq('debit.user', ':user'),
+                    (new Expr())->eq('creditUser', ':user'),
+                    (new Expr())->eq('debitUser', ':user'),
                 )
             )
             ->setParameters([

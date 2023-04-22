@@ -7,14 +7,14 @@ use App\Entity\Account;
 use App\Repository\AccountRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\ViewModel\Transformer\AccountDTOtransformer;
+use App\ViewModel\Transformer\AccountDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/json/account')]
 class AccountController extends AbstractController
 {
     public function __construct(
-        private AccountDTOtransformer $accountDTOtransformer,
+        private AccountDTOTransformer $accountDTOtransformer,
         private AccountRepository $accountRepository
     ) {
     }

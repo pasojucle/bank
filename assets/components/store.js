@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+
 const routes = require('../../web/js/fos_js_routes.json');
 
 import Routing from 'fos-router';
@@ -10,6 +11,7 @@ export const store = reactive({
     'category': [],
     'label': [],
     'transaction': [],
+    'schedule': [],
   },
   filter: {
     needle: null,
