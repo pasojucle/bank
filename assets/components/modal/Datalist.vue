@@ -72,7 +72,7 @@ export default {
             .then(data => {
                 console.log('data', data);
                 if (data.category) {
-                   document.querySelector('[name ="transaction[category]"], [name ="schedule[category]"]').value = data.category.id;
+                   document.querySelector('[name ="transaction[category]"], [name ="deadline[category]"]').value = data.category.id;
                 }
             });
         }

@@ -5,12 +5,12 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ScheduleRepository;
+use App\Repository\DeadlineRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-#[ORM\Entity(repositoryClass: ScheduleRepository::class)]
-class Schedule extends AbstractTransaction
+#[ORM\Entity(repositoryClass: DeadlineRepository::class)]
+class Deadline extends AbstractTransaction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,17 +18,17 @@ class Schedule extends AbstractTransaction
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $deadlineDay = null;
+    private ?int $day = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $endAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Month::class, inversedBy: 'schedules')]
-    private Collection $deadlineMonths;
+    #[ORM\ManyToMany(targetEntity: Month::class, inversedBy: 'deadlines')]
+    private Collection $months;
 
     public function __construct()
     {
-        $this->deadlineMonths = new ArrayCollection();
+        $this->months = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -36,14 +36,14 @@ class Schedule extends AbstractTransaction
         return $this->id;
     }
 
-    public function getDeadlineDay(): ?int
+    public function getDay(): ?int
     {
-        return $this->deadlineDay;
+        return $this->day;
     }
 
-    public function setDeadlineDay(int $deadlineDay): self
+    public function setDay(int $day): self
     {
-        $this->deadlineDay = $deadlineDay;
+        $this->day = $day;
 
         return $this;
     }
@@ -63,23 +63,23 @@ class Schedule extends AbstractTransaction
     /**
      * @return Collection<int, Month>
      */
-    public function getDeadlineMonths(): Collection
+    public function getMonths(): Collection
     {
-        return $this->deadlineMonths;
+        return $this->months;
     }
 
-    public function addDeadlineMonth(Month $deadlineMonth): self
+    public function addMonth(Month $month): self
     {
-        if (!$this->deadlineMonths->contains($deadlineMonth)) {
-            $this->deadlineMonths->add($deadlineMonth);
+        if (!$this->months->contains($month)) {
+            $this->months->add($month);
         }
 
         return $this;
     }
 
-    public function removeDeadlineMonth(Month $deadlineMonth): self
+    public function removeMonth(Month $month): self
     {
-        $this->deadlineMonths->removeElement($deadlineMonth);
+        $this->months->removeElement($month);
 
         return $this;
     }

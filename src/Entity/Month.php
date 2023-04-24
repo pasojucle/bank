@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MonthRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Deadline;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MonthRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: MonthRepository::class)]
 class Month
@@ -18,12 +19,12 @@ class Month
     #[ORM\Column(length: 25)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Schedule::class, mappedBy: 'deadlineMonths', )]
-    private Collection $schedules;
+    #[ORM\ManyToMany(targetEntity: Deadline::class, mappedBy: 'months', )]
+    private Collection $deadlines;
 
     public function __construct()
     {
-        $this->schedules = new ArrayCollection();
+        $this->deadlines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -44,27 +45,27 @@ class Month
     }
 
     /**
-     * @return Collection<int, Schedule>
+     * @return Collection<int, Deadline>
      */
-    public function getSchedules(): Collection
+    public function getDeadlines(): Collection
     {
-        return $this->schedules;
+        return $this->deadlines;
     }
 
-    public function addSchedule(Schedule $schedule): self
+    public function addDeadline(Deadline $deadline): self
     {
-        if (!$this->schedules->contains($schedule)) {
-            $this->schedules->add($schedule);
-            $schedule->addDeadlineMonth($this);
+        if (!$this->deadlines->contains($deadline)) {
+            $this->deadlines->add($deadline);
+            $deadline->addMonth($this);
         }
 
         return $this;
     }
 
-    public function removeSchedule(Schedule $schedule): self
+    public function removeDeadline(Deadline $deadline): self
     {
-        if ($this->schedules->removeElement($schedule)) {
-            $schedule->removeDeadlineMonth($this);
+        if ($this->deadlines->removeElement($deadline)) {
+            $deadline->removeMonth($this);
         }
 
         return $this;

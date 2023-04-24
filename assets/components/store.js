@@ -11,7 +11,7 @@ export const store = reactive({
     'category': [],
     'label': [],
     'transaction': [],
-    'schedule': [],
+    'deadline': [],
   },
   filter: {
     needle: null,

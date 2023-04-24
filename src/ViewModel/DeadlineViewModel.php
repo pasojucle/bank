@@ -7,7 +7,7 @@ namespace App\ViewModel;
 
 use App\ViewModel\AccountViewModel;
 
-class ScheduleViewModel
+class DeadlineViewModel
 {
     public string $entityName;
     public ?int $id = null;

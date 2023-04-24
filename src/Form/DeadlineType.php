@@ -6,7 +6,7 @@ use App\Entity\Label;
 use App\Entity\Month;
 use App\Entity\Account;
 use App\Entity\Category;
-use App\Entity\Schedule;
+use App\Entity\Deadline;
 use App\Form\Type\DatalistType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class ScheduleType extends AbstractType
+class DeadlineType extends AbstractType
 {
     public const TRANSACTION_TYPE_DEBIT = 0;
     public const TRANSACTION_TYPE_CREDIT = 1;
@@ -57,11 +57,11 @@ class ScheduleType extends AbstractType
                 'label' => 'Montant',
                 'divisor' => 100,
             ])
-            ->add('deadlineDay', IntegerType::class, [
+            ->add('day', IntegerType::class, [
                 'label' => 'Jour de prélèvement',
                 'attr' => ['min' => 1, 'max' => 31],
             ])
-            ->add('deadlineMonths', EntityType::class, [
+            ->add('months', EntityType::class, [
                 'label' => 'Mois de prélèvement',
                 'multiple' => true,
                 'class' => Month::class,
@@ -81,7 +81,7 @@ class ScheduleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Schedule::class,
+            'data_class' => Deadline::class,
         ]);
     }
 }
