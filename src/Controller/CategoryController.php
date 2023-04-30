@@ -20,7 +20,7 @@ class CategoryController extends AbstractController
     ) {
     }
     
-    #[Route('/', name: 'category_index', methods: ['GET'])]
+    #[Route('', name: 'category_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('category/index.html.twig');

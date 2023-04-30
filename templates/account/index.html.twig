@@ -11,7 +11,7 @@
                 <a href="{{ path('account_new') }}"  class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouveau compte</span></a>
             </div>
             <div class="nav-link ms-auto">
-                <div id="v-search-filter" data-vue-search-filter></div>
+                <div id="v-search-filter" data-vue-search-filter {{ vue_component('TransactionsFilter') }}></div>
             </div>
         </nav>
     </div>
@@ -23,7 +23,7 @@
                     <th>actions</th>
                 </tr>
             </thead>
-            <tbody id="v-accounts" data-vue-accounts></tbody>
+            <tbody {{ vue_component('Accounts')}}></tbody>
         </table>
     </div>
 </div>

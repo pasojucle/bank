@@ -22,11 +22,12 @@ class Label
     private Collection $transactions;
 
     #[ORM\ManyToOne(inversedBy: 'labels')]
-    private ?Account $account = null;
+    private User $user;
 
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
+        $this->user = new User();
     }
 
     public function __toString()
@@ -81,14 +82,14 @@ class Label
         return $this;
     }
 
-    public function getAccount(): ?Account
+    public function getUser(): ?User
     {
-        return $this->account;
+        return $this->user;
     }
 
-    public function setAccount(?Account $account): self
+    public function setUser(?User $user): self
     {
-        $this->account = $account;
+        $this->user = $user;
 
         return $this;
     }

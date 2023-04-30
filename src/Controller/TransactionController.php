@@ -46,6 +46,7 @@ class TransactionController extends AbstractController
             $transactionType = $request->request->all('transaction')['transactionType'];
             $setAccount = (TransactionType::TRANSACTION_TYPE_DEBIT === (int)$transactionType) ? 'setDebitAccount' : 'setCreditAccount';
             $transaction->$setAccount($account);
+            
             $this->transactionRepository->save($transaction, true);
 
             return new JsonResponse([

@@ -6,9 +6,9 @@
 </template>
 
 <script>
-const routes = require('../../web/js/fos_js_routes.json');
+const routes = require('../../../web/js/fos_js_routes.json');
 import Routing from 'fos-router';
-import { loadModal } from '../js/modal'
+import { loadModal } from '../../js/modal'
 import { store } from './store.js'
 
 export default {

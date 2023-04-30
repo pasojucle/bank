@@ -39,9 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Account::class, mappedBy: 'users')]
     private Collection $accounts;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Label::class)]
+    private Collection $labels;
+
     public function __construct()
     {
         $this->accounts = new ArrayCollection();
+        $this->labels = new ArrayCollection();
     }
 
     public function getId(): int
@@ -142,6 +146,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->accounts->removeElement($account)) {
             $account->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Label>
+     */
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function addLabel(Label $label): self
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels->add($label);
+            $label->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Label $label): self
+    {
+        if ($this->labels->removeElement($label)) {
+            // set the owning side to null (unless already changed)
+            if ($label->getUser() === $this) {
+                $label->setUser(null);
+            }
         }
 
         return $this;

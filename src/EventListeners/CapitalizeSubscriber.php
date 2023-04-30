@@ -39,15 +39,15 @@ class CapitalizeSubscriber implements EventSubscriberInterface
         //$this->capitalize($args);
     }
 
-    private function capitalize(LifecycleEventArgs $args): void
-    {
-        $entity = $args->getObject();
-        $reflexionClass = new ReflectionClass($entity);
-        if ($reflexionClass->hasProperty('name')) {
-            $name = mb_convert_case(ucfirst($entity->getName()), MB_CASE_TITLE, 'UTF-8');
-            $entity->setName($name);
-        }
-    }
+    // private function capitalize(LifecycleEventArgs $args): void
+    // {
+    //     $entity = $args->getObject();
+    //     $reflexionClass = new ReflectionClass($entity);
+    //     if ($reflexionClass->hasProperty('name')) {
+    //         $name = mb_convert_case(ucfirst($entity->getName()), MB_CASE_TITLE, 'UTF-8');
+    //         $entity->setName($name);
+    //     }
+    // }
 
     private function toLowerCase(LifecycleEventArgs $args): void
     {

@@ -21,7 +21,7 @@ class AccountController extends AbstractController
         
     }
 
-    #[Route('/', name: 'account_index', methods: ['GET'])]
+    #[Route('', name: 'account_index', methods: ['GET'])]
     public function index(AccountRepository $accountRepository): Response
     {
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED');

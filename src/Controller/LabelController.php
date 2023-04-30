@@ -20,7 +20,7 @@ class LabelController extends AbstractController
         
     }
     
-    #[Route('/', name: 'label_index', methods: ['GET'])]
+    #[Route('', name: 'label_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('label/index.html.twig');

@@ -20,7 +20,7 @@ class DeadlineController extends AbstractController
     ) {
     }
     
-    #[Route('/', name: 'deadline_index', methods: ['GET'])]
+    #[Route('', name: 'deadline_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('deadline/index.html.twig');

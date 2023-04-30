@@ -1,4 +1,3 @@
-import { mountModalComponents } from '../components/mountComponents.js'
 import { initTableCheck } from './table_check.js';
 var modalSelector = '[data-bs-toggle="modal-dynamic"]';
 document.addEventListener("DOMContentLoaded", function() {
@@ -9,7 +8,6 @@ const initModal = () => {
     console.log('modal-dynamic', document.querySelectorAll('[data-bs-toggle="modal-dynamic"]'));
     document.querySelectorAll(modalSelector).forEach(element => element.addEventListener('click', (event) => {
         console.log('addEvent',element,  event.target)
-        // if (element !== event.target) return;
         loadModal(event);
     }, false));
 }
@@ -43,7 +41,7 @@ const loadModal = (event) => {
 
         modalEl.addEventListener('shown.bs.modal', event => {
             console.log('show', event.target)
-            mountModalComponents();
+
             initTableCheck();
         })
 

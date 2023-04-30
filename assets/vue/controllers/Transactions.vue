@@ -17,15 +17,18 @@
 </template>
 
 <script>
-const routes = require('../../web/js/fos_js_routes.json');
+const routes = require('../../../web/js/fos_js_routes.json');
 import Routing from 'fos-router';
-import { loadModal } from '../js/modal'
+import { loadModal } from '../../js/modal'
 import { store } from './store.js'
 
 export default {
+    props: {
+        account: Number,
+    },
     data() {
         return {
-            store
+            store,
         }
     },
     methods: {
@@ -40,8 +43,8 @@ export default {
         },
     },
     created() {
-        const el = this.store.getDomElement('#v-transactions');
-        this.store.getList('transaction', {'account': el.getAttribute('data-account')});
+        console.log('transactions account', this.account)
+        this.store.getList('transaction', {'account': this.account});
     },
 }
 </script>

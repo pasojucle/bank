@@ -6,7 +6,7 @@
 <script>
 const routes = require('../../../web/js/fos_js_routes.json');
 
-import { store } from './../store.js'
+import { store } from './store.js'
 
 export default {
     methods: {
@@ -29,6 +29,9 @@ export default {
                 });
             }
         }
+    },    
+    created() {
+        console.log('Submit')
     },
 }
 </script>

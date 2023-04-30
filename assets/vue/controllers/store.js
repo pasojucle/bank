@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-const routes = require('../../web/js/fos_js_routes.json');
+const routes = require('../../../web/js/fos_js_routes.json');
 
 import Routing from 'fos-router';
 

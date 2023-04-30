@@ -26,7 +26,7 @@ final class Version20230220185954 extends AbstractMigration
         $this->addSql('CREATE TABLE category (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE deadline (id INT AUTO_INCREMENT NOT NULL, label_id INT DEFAULT NULL, category_id INT DEFAULT NULL, debit_account_id INT DEFAULT NULL, credit_account_id INT DEFAULT NULL, day INT NOT NULL, end_at DATE DEFAULT NULL, amount INT NOT NULL, INDEX IDX_B74774F233B92F39 (label_id), INDEX IDX_B74774F212469DE2 (category_id), INDEX IDX_B74774F2204C4EAA (debit_account_id), INDEX IDX_B74774F26813E404 (credit_account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE deadline_month (deadline_id INT NOT NULL, month_id INT NOT NULL, INDEX IDX_96548A9673EA0AF8 (deadline_id), INDEX IDX_96548A96A0CBDE4 (month_id), PRIMARY KEY(deadline_id, month_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE label (id INT AUTO_INCREMENT NOT NULL, account_id INT DEFAULT NULL, name VARCHAR(100) NOT NULL, INDEX IDX_EA750E89B6B5FBA (account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE label (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(100) NOT NULL, INDEX IDX_EA750E8A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE month (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(25) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE transaction (id INT AUTO_INCREMENT NOT NULL, label_id INT DEFAULT NULL, category_id INT DEFAULT NULL, debit_account_id INT DEFAULT NULL, credit_account_id INT DEFAULT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', checked TINYINT(1) NOT NULL, comment LONGTEXT DEFAULT NULL, amount INT NOT NULL, INDEX IDX_723705D133B92F39 (label_id), INDEX IDX_723705D112469DE2 (category_id), INDEX IDX_723705D1204C4EAA (debit_account_id), INDEX IDX_723705D16813E404 (credit_account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, token VARCHAR(255) DEFAULT NULL, email VARCHAR(100) NOT NULL, password VARCHAR(64) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -39,7 +39,7 @@ final class Version20230220185954 extends AbstractMigration
         $this->addSql('ALTER TABLE deadline ADD CONSTRAINT FK_B74774F26813E404 FOREIGN KEY (credit_account_id) REFERENCES account (id)');
         $this->addSql('ALTER TABLE deadline_month ADD CONSTRAINT FK_96548A9673EA0AF8 FOREIGN KEY (deadline_id) REFERENCES deadline (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE deadline_month ADD CONSTRAINT FK_96548A96A0CBDE4 FOREIGN KEY (month_id) REFERENCES month (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE label ADD CONSTRAINT FK_EA750E89B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
+        $this->addSql('ALTER TABLE label ADD CONSTRAINT FK_EA750E8A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D133B92F39 FOREIGN KEY (label_id) REFERENCES label (id)');
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D112469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
         $this->addSql('ALTER TABLE transaction ADD CONSTRAINT FK_723705D1204C4EAA FOREIGN KEY (debit_account_id) REFERENCES account (id)');
@@ -75,7 +75,7 @@ final class Version20230220185954 extends AbstractMigration
         $this->addSql('ALTER TABLE deadline DROP FOREIGN KEY FK_B74774F26813E404');
         $this->addSql('ALTER TABLE deadline_month DROP FOREIGN KEY FK_96548A9673EA0AF8');
         $this->addSql('ALTER TABLE deadline_month DROP FOREIGN KEY FK_96548A96A0CBDE4');
-        $this->addSql('ALTER TABLE label DROP FOREIGN KEY FK_EA750E89B6B5FBA');
+        $this->addSql('ALTER TABLE label DROP FOREIGN KEY FK_EA750E8A76ED395');
         $this->addSql('ALTER TABLE transaction DROP FOREIGN KEY FK_723705D133B92F39');
         $this->addSql('ALTER TABLE transaction DROP FOREIGN KEY FK_723705D112469DE2');
         $this->addSql('ALTER TABLE transaction DROP FOREIGN KEY FK_723705D1204C4EAA');

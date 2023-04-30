@@ -1,10 +1,4 @@
 {% block datalist_row %}
     {% set value = (form.vars.value) ? form.vars.value|json_encode : '' %}
-    <div class="v-datalist"
-        data-vue-datalist
-        data-id="{{ form.vars.id }}"
-        data-label="{{ form.vars.label }}"
-        data-value="{{ value }}"
-        data-name={{ form.vars.full_name }}>
-    </div>
+    <div {{ vue_component('Datalist',{'formId': form.vars.id, 'formLabel': form.vars.label, 'initialValue': form.vars.value, 'formName': form.vars.full_name}) }}></div>
 {% endblock %}

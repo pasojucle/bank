@@ -6,11 +6,10 @@
 
     <div class="card">
         <div class="card-header sticky-top top-nav text-bg-light">
-            <div id="v-account" data-vue-account data-account="{{ account.id }}"></div>
-            <div id="v-transactions-filter" data-vue-transactions-filter data-account={{ account.id }}></div>
+            <div {{ vue_component('Account', { 'id': account.id }) }}></div>
+            <div {{ vue_component('TransactionsFilter', { 'account': account.id }) }}></div>
         </div>
         <div class="card-body">
-
             <table class="table table-striped table-sm table-responsive mt-2">
                 <thead>
                     <tr>
@@ -21,7 +20,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody id="v-transactions" data-vue-transactions data-account="{{ account.id }}"></tbody>
+                <tbody {{ vue_component('Transactions', { 'account': account.id }) }}</tbody>
             </table>
         </div>
     </div>

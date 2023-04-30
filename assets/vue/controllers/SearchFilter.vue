@@ -6,7 +6,7 @@
 </template>
 
 <script>
-const routes = require('../../web/js/fos_js_routes.json');
+const routes = require('../../../web/js/fos_js_routes.json');
 import { store } from './store.js'
 
 export default {

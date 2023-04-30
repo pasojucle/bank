@@ -60,7 +60,10 @@ class DeadlineRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->join('d.months', 'm')
             ->andWhere(
-                (new Expr)->lte('d.endAt', 'CURRENT_DATE()'),
+                (new Expr)->orX(
+                    (new Expr)->lte('d.endAt', 'CURRENT_DATE()'),
+                    (new Expr)->isNull('d.endAt'),
+                ),
                 (new Expr)->eq('m.id', 'MONTH(CURRENT_DATE())')
             )
             ->getQuery()

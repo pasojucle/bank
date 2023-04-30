@@ -8,7 +8,7 @@
         <h1>Libellés</h1>
         <nav class="nav bg-body-tertiary nav-pills">
             <div class="nav-link ms-auto">
-                <div id="v-search-filter" data-vue-search-filter></div>
+                <div {{ vue_component('SearchFilter') }}></div>
             </div>
         </nav>
     </div>
@@ -20,7 +20,7 @@
                     <th>actions</th>
                 </tr>
             </thead>
-            <tbody id="v-labels" data-vue-labels></tbody>
+            <tbody {{ vue_component('Labels') }}></tbody>
         </table>
     </div>
 </div>   

@@ -2,11 +2,12 @@
 
 namespace App\Controller\API;
 
+use App\Entity\User;
 use App\Repository\LabelRepository;
-use App\ViewModel\Transformer\LabelDTOTransformer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use App\ViewModel\Transformer\LabelDTOTransformer;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/json/label')]
 class LabelController extends AbstractController
@@ -20,7 +21,7 @@ class LabelController extends AbstractController
     #[Route('/', name: 'json_label_list', methods: ['GET'], options: ['expose' => true])]
     public function list(): JsonResponse
     {
-        /** @ var User $user */
+        /** @var User $user */
         $user = $this->getUser();
 
         return new JsonResponse([

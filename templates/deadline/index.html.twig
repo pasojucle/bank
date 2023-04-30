@@ -11,7 +11,7 @@
                     <a href="{{ path('deadline_new') }}"  class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouvelle échéance</span></a>
                 </div>
                 <div class="nav-link ms-auto">
-                    <div id="v-search-filter" data-vue-search-filter></div>
+                    <div {{ vue_component('SearchFilter') }}></div>
                 </div>
             </nav> 
         </div>
@@ -25,7 +25,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody id="v-deadlines" data-vue-deadlines></tbody>
+                <tbody {{ vue_component('Deadlines') }}></tbody>
             </table>
         </div>
     </div>

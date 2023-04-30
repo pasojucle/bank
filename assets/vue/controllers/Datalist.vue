@@ -1,31 +1,37 @@
 <template>
     <div class="mb-3 datalist-container">
-        <label for="{{ select.id }}" class="form-label">{{ selectedLabel.label }}</label>
+        <label for="{{ formId }}" class="form-label">{{ formLabel }}</label>
         <div class="form-group datalist-container">
             <div id="complete" class="form-control">{{ getSearchName() }}</div>
             <input type="text" :class="classComplete" v-model="input" @keydown.enter.prevent="complete($event)"/>
 
         </div>
-        <select :id="selectedLabel.id" :name="selectedLabel.name" required v-model="selectedLabel.value" class="form-control hidden">
-            <option v-for="(option, index) in options" :key="index" :value="option.id" :selected="option.id == selectedLabel.value">{{ option.name }}</option>
+        <select :id="formId" :name="formName" required v-model="label.id" class="form-control hidden">
+            <option v-for="(option, index) in options" :key="index" :value="option.id" :selected="option.id == label.id">{{ option.name }}</option>
         </select>
     </div>
 </template>
 
 <script>
 
-import { store } from './../store.js'
+import { store } from './store.js'
 import Routing from 'fos-router';
 
 export default {
+    props: {
+        formId: String,
+        formLabel:  String,
+        formName: String,
+        initialValue: Object,
+    },
     data() {
         return {
             el: '',
             classComplete: 'form-control',
             input: '',
             search: null,
-            value: '',
-            selectedLabel: {},
+            labelText: '',
+            label: {},
             options: [],
             store
         }
@@ -48,21 +54,23 @@ export default {
             if (0 < this.search.id) {
                 this.input = this.search.name;
             }
-            console.log('input', this.input);
+            console.log('complete input', this.input);
         },
         refresh(value) {
+            console.log('[refresh]', value)
             if (this.search && value === this.search.name) {
                 this.classComplete = 'form-control complete';
-                this.selectedLabel.value = this.search.id;
+                console.log('search', this.search);
+                this.label = this.search;
                 this.getDefaultCategory();
                return;
             }
-            this.selectedLabel.value = null;
+
             this.classComplete = 'form-control';
             let index =  this.options.findIndex(({ id }) => id.toString().startsWith('__'));
             const id = '__'+value;
-            this.options[index] = {'id': id, 'label': value};
-            this.selectedLabel.value = id;
+            this.label = {'id': id, 'name': value}
+            this.options[index] = this.label;
         },
         async getDefaultCategory() {
             await fetch(Routing.generate(`json_category_default`, {'label': this.search.id}), {
@@ -81,6 +89,10 @@ export default {
         input(value) {
             let result = [];
             console.log('labels', this.store.list.label)
+            console.log('watch', value)
+            if (undefined === value) {
+                return;
+            }
             if (0 < value.length) {
                 this.input = this.capitalize(value);
             }
@@ -91,31 +103,21 @@ export default {
                     }
                 });
             }
+            console.log('this.label', this.label)
+            console.log('result', result)
 
-            this.search = (0 < result.length && (1 > this.selectedLabel.value || result.length <= this.selectedLabel.value.length)) ? result.shift() : null;
+            this.search = (0 < result.length && (1 > this.label.name || result.length <= this.label.name.length)) ? result.shift() : null;
+            console.log('search', this.search)
             this.refresh(value);
-            console.log('[selectedLabel]', this.selectedLabel)
         },
     },
     created() {
-        this.el = this.store.getDomElement('.v-datalist');
+        console.log('created', this)
         this.store.getList('label').then(() => {
             this.setOptions();
-            const jsonValues = this.el.getAttribute('data-value');
-            let value = null;
-            console.log('jsonValues', jsonValues)
-            if (jsonValues) {
-                value = this.capitalize(Object.values(JSON.parse(this.el.getAttribute('data-value'))).shift());
-                console.log('created', value)
-                this.input = value;
-            }
-            this.selectedLabel = {
-                'id': this.el.getAttribute('data-id'),
-                'label': this.el.getAttribute('data-label'),
-                'name': this.el.getAttribute('data-name'),
-                'required': this.el.getAttribute('data-required'),
-                'value': value,
-            };
+            this.label = this.initialValue;
+            this.input = this.label.name;
+            console.log('input', this.input)
         });
     },
 }

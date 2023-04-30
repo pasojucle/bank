@@ -9,22 +9,20 @@
 </template>
 
 <script>
-const routes = require('../../web/js/fos_js_routes.json');
-import Routing from 'fos-router';
+const routes = require('../../../web/js/fos_js_routes.json');
 
 import { store } from './store.js'
 
 export default {
+    props: {
+        id: Number,
+    },
     data() {
         return {
             store,
-            id: '',
         }
     },
     methods: {
-        path(account) {
-            return Routing.generate('account_edit', {'id': account.id});
-        },
         getAccount(property) {
             const account = this.store.listFindById('account', this.id);
             console.log('account', account)
@@ -34,7 +32,7 @@ export default {
         }
     },
     created() {
-        this.id = this.store.getDomElement('#v-account').getAttribute('data-account');
+        console.log('account id', this.id)
         this.store.edit('account', {'id': this.id});
     },
 }

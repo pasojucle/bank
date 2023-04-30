@@ -48,10 +48,8 @@ class LabelRepository extends ServiceEntityRepository
     public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('l')
-        ->join('l.account', 'a')
-        ->join('a.users', 'u')
             ->andWhere(
-                (new Expr)->eq('u', ':user')
+                (new Expr)->eq('l.user', ':user')
             )
             ->setParameter('user', $user)
             ->orderBy('l.name', 'ASC')
