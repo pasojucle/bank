@@ -47,11 +47,11 @@ class ApiTokenAuthenticator extends AbstractAuthenticator implements Authenticat
         /** @var string $authorizationHeader */
         $authorizationHeader = $request->headers->get('Authorization');
         $receivedToken = substr($authorizationHeader, 7);
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->userRepository->findOneBy([
             'token' => $receivedToken,
         ]);
-        if (!$user) {
+        if (null === $user) {
             throw new CustomUserMessageAuthenticationException('Invalid Token');
         }
 

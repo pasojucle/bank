@@ -2,12 +2,13 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 
 class EntityToPropertyTransformer implements DataTransformerInterface
@@ -18,7 +19,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private Security $security, 
-        private readOnly string $class,
+        string $class,
         private $primaryKey = 'id', 
         private $newTagPrefix = '__',)
     {

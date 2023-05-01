@@ -26,7 +26,6 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
     public const LOGIN_ROUTE = 'app_login';
 
     public function __construct(
-        private Security $security,
         private UrlGeneratorInterface $urlGenerator
     ) {
     }
