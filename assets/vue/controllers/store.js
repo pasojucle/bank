@@ -12,6 +12,7 @@ export const store = reactive({
     'label': [],
     'transaction': [],
     'deadline': [],
+    'import': [],
   },
   filter: {
     needle: null,

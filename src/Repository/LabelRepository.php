@@ -7,6 +7,7 @@ use App\Entity\Label;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends ServiceEntityRepository<Label>
@@ -56,5 +57,20 @@ class LabelRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findOneByName(string $name): ?Label
+    {
+        try {
+            return $this->createQueryBuilder('l')
+                ->andWhere(
+                    (new Expr)->like('LOWER(l.name)', ':name')
+                )
+                ->setParameter('name', strtolower($name))
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch(NonUniqueResultException) {
+            return null;
+        }
     }
 }

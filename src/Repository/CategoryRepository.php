@@ -80,14 +80,4 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

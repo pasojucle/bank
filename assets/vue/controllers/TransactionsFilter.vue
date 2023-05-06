@@ -1,9 +1,12 @@
 <template>
     <nav class="nav bg-body-tertiary nav-pills">
-        <div class="nav-link px-0">
-            <a :href="pathNew()" class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block ms-2">Nouvelle opération</span></a>
+        <div class="nav-link pe-2 ps-0">
+            <a :href="pathNew()" class="btn btn-sm btn-primary" data-bs-toggle="modal-dynamic" data-bs-target="#clue-modal" role="button"><i class="bi bi-plus-lg d-sm-none"></i><span class="d-none d-sm-block">Nouvelle opération</span></a>
         </div>
-        <div class="nav-link pe-2 ms-auto">
+        <div class="nav-link px-0">
+            <TransactionsUplaod :account="account" :form="form" />
+        </div>
+        <div class="nav-link pe-2 ps-0 ms-auto">
             <input @click="handleChecked($event)" type="checkbox" class="btn-sm btn-check" id="btn-check-outlined" autocomplete="off">
             <label class="btn btn-sm btn-outline-primary" for="btn-check-outlined"><i class="bi bi-check-lg"></i></label><br>
         </div>
@@ -18,12 +21,16 @@
 
 <script>
 const routes = require('../../../web/js/fos_js_routes.json');
+import TransactionsUplaod from './TransactionsUpload.vue';
 import { store } from './store.js'
 import Routing from 'fos-router';
 
 export default {
     props: {
         account: Number,
+    },
+    components: {
+        TransactionsUplaod,
     },
     data() {
         return {
@@ -37,11 +44,6 @@ export default {
         handleChecked(event) {
             this.store.filter.checked = event.target.checked;
         }
-    },
-    created() {
-        console.log('props account', this.account)
-        //const el = this.store.getDomElement('#v-transactions-filter');
-        // this.account = el.getAttribute('data-account');
     },
 }
 </script>

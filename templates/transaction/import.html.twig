@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-header sticky-top top-nav text-bg-light">
             <div {{ vue_component('Account', { 'id': account.id }) }}></div>
-            <div {{ vue_component('TransactionsFilter', { 'account': account.id }) }}></div>
+            <div {{ vue_component('SerachFilter', { 'account': account.id }) }}></div>
         </div>
         <div class="card-body">
             <table class="table table-striped table-sm table-responsive mt-2">
@@ -20,7 +20,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody {{ vue_component('Transactions', { 'account': account.id}) }}></tbody>
+                <tbody {{ vue_component('TransactionsImport', {'account': account.id, 'filename': filename}) }}></tbody>
             </table>
         </div>
     </div>

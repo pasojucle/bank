@@ -4,7 +4,6 @@
         <div class="form-group datalist-container">
             <div id="complete" class="form-control">{{ getSearchName() }}</div>
             <input type="text" :class="classComplete" v-model="input" @keydown.enter.prevent="complete($event)"/>
-
         </div>
         <select :id="formId" :name="formName" required v-model="label.id" class="form-control hidden">
             <option v-for="(option, index) in options" :key="index" :value="option.id" :selected="option.id == label.id">{{ option.name }}</option>
@@ -26,7 +25,6 @@ export default {
     },
     data() {
         return {
-            el: '',
             classComplete: 'form-control',
             input: '',
             search: null,

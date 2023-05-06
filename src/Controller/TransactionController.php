@@ -2,17 +2,25 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\User;
+use App\Entity\Label;
+use DateTimeImmutable;
 use App\Entity\Account;
+use App\Form\ImportType;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\ViewModel\Transformer\AccountDTOTransformer;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\ViewModel\Transformer\TransactionDTOTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/transaction')]
 class TransactionController extends AbstractController
@@ -21,13 +29,15 @@ class TransactionController extends AbstractController
         private TransactionDTOTransformer $transactionDTOTransformer,
         private TransactionRepository $transactionRepository,
         private AccountDTOTransformer $accountDTOtransformer,
+        private EntityManagerInterface $entityManager
     ) {
         
     }
     
-    #[Route('/{account}', name: 'transaction_index', methods: ['GET'], options: ['expose' => true])]
+    #[Route('/{account}', name: 'transaction_index', methods: ['GET'], requirements:['account' => '\d+'], options: ['expose' => true])]
     public function index(Account $account): Response
     {
+
         return $this->render('transaction/index.html.twig', [
             'account' => $account,
         ]);
@@ -122,5 +132,40 @@ class TransactionController extends AbstractController
                 'sort' => 'nameASC',
             ],
         ]);
+    }
+
+    #[Route('/upload/{account}', name: 'transaction_upload', methods: ['POST', 'GET'], options: ['expose' => true])]
+    public function upload(Request $request, SluggerInterface $slugger, Account $account): JsonResponse|Response
+    {
+        $form = $this->createForm(ImportType::class, null, [
+            'action' => $this->generateUrl('transaction_upload', ['account'=> $account->getId()])
+        ]);
+        $form->handleRequest($request);
+        if ($request->isMethod('POST') && $form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            dump($file);
+            if ($file) {
+                $filename = 'import.csv';
+                try {
+                    $file->move(
+                        $this->getParameter('data_dir_path'),
+                        $filename
+                    );
+                } catch (FileException $e) {
+                    dump($e);
+                    // ... handle exception if something happens during file upload
+                }
+
+                return $this->render('transaction/import.html.twig', [
+                    'account' => $account,
+                    'filename' => $filename,
+                ]);
+
+            }
+        }
+        return $this->render('transaction/upload_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+        
     }
 }
