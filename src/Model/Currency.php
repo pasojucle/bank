@@ -8,7 +8,7 @@ class Currency
 {
     private int $amount = 0;
 
-    public function __construct(?int $amount)
+    public function __construct(int $amount = 0)
     {
         $this->amount = $amount;
     }
@@ -41,5 +41,17 @@ class Currency
         $this->amount -= $amountToSub->amount;
 
         return $this;
+    }
+
+    static function fromString(string $amount): self
+    {
+        $value = 0;
+        if (1 === preg_match('#^-*(\d+),*(\d*)$#', $amount, $matches)) {
+            $value = (float) sprintf('%d.%d', $matches[1], $matches[2]) * 100;
+        }
+        $currency = new self();
+        $currency->setAmount($value);
+
+        return $currency;
     }
 }

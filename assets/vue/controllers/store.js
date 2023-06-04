@@ -86,12 +86,17 @@ export const store = reactive({
     return this.list[entity].filter(item => item.name.toLowerCase().includes(this.filter.needle.toLowerCase()));
   },
   transactionListFiltered() {
+    
     if (null === this.filter.needle && !this.filter.checked ) {
       return this.list['transaction'];
     }
+    console.log('filter', this.filter)
+    console.log('transaction list', this.list['transaction'])
     return this.list['transaction'].filter(transaction => this.transactionFilterNeedle(transaction) && this.transactionFilterChecked(transaction));
   },
   transactionFilterNeedle(transaction) {
+
+    console.log('transaction', transaction.amount, this.filter.needle, transaction.amount.includes(this.filter.needle));
     if (null !== this.filter.needle && transaction.label.name.toLowerCase().includes(this.filter.needle.toLowerCase()) || transaction.amount.includes(this.filter.needle) || transaction.createdAtStr.includes(this.filter.needle)) {
       return true;
     }
@@ -101,6 +106,8 @@ export const store = reactive({
     return false;
   },
   transactionFilterChecked(transaction) {
+
+    console.log('transaction', transaction);
     if (!transaction.checked && this.filter.checked) {
       return true;
     }
@@ -119,10 +126,16 @@ export const store = reactive({
     return nameA.localeCompare(nameB);
   },
   createdAtDESC(a, b) {
-    const createdAtA = a.createdAt;
-    const createdAtB = b.createdAt;
+    const createdAtA = Date.parse(a.createdAt);
+    const createdAtB = Date.parse(b.createdAt);
   
-    return createdAtB.localeCompare(createdAtA);
+    return createdAtA - createdAtB;
+  },
+  createdAtASC(a, b) {
+    const createdAtA = Date.parse(a.createdAt);
+    const createdAtB = Date.parse(b.createdAt);
+  
+    return createdAtB - createdAtA ;
   }
 })
 

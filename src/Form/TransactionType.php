@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Label;
 use App\Entity\Category;
 use App\Entity\Transaction;
+use App\Form\HiddenAccountType;
 use App\Form\Type\DatalistType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -57,7 +58,8 @@ class TransactionType extends AbstractType
                 'label' => 'Commentaire',
                 'required' => false,
             ])
-
+                ->add('creditAccount', HiddenAccountType::class)
+                ->add('debitAccount', HiddenAccountType::class)
         ;
     }
 

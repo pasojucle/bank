@@ -13,7 +13,7 @@ class TransactionService
 {
     public function getAmount(AbstractTransaction $transaction, ?Account $account): string
     {
-        $symbol = ($account === $transaction->getDebitAccount()) ? '- ' : '';
+        $symbol = ($account === $transaction->getDebitAccount()) ? '-' : '';
         return $symbol . (new Currency($transaction->getAmount()))->toString();
     }
 }

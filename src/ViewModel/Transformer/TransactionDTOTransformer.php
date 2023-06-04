@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModel\Transformer;
 
 use App\Entity\Account;
-use App\Model\Currency;
 use App\Entity\Transaction;
 use App\Service\TransactionService;
 use App\ViewModel\TransactionViewModel;

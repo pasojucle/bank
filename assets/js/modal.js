@@ -29,10 +29,21 @@ const loadModal = (event) => {
     })
     .then((response) => response.text())
     .then((text)=> {
-        const htmlElement = document.createRange().createContextualFragment(text);
-        const htmlModal = htmlElement.querySelector('.modal');
-        const options = {'backdrop' : 'static'};
-        document.querySelector('body').append(htmlModal);
+        createModal(modalTarget, text)
+    })
+}
+
+const dispose = (modalTarget) => {
+    const domModal = document.querySelector(modalTarget);
+    if (domModal) {
+        domModal.remove();
+    }
+}
+
+const createModal = (modalTarget, html) => {
+    const options = {'backdrop' : 'static'};
+        document.querySelector('body').insertAdjacentHTML('afterbegin', html);
+
         const modal = new bootstrap.Modal(document.querySelector(modalTarget), options);
         console.log('modal', modal)
         const modalEl = modal._element;
@@ -50,14 +61,6 @@ const loadModal = (event) => {
             modal.dispose()
             modalEl.remove();
         })
-    })
 }
 
-const dispose = (modalTarget) => {
-    const domModal = document.querySelector(modalTarget);
-    if (domModal) {
-        domModal.remove();
-    }
-}
-
-export { loadModal }
+export { loadModal, createModal, dispose }
