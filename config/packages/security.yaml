@@ -9,11 +9,16 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        api_provider:
+            entity:
+                class: App\Entity\User
+                property: token
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         api:
+            provider: api_provider
             pattern: ^/api/
             custom_authenticator: App\Security\ApiTokenAuthenticator
         main:

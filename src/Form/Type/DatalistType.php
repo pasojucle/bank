@@ -28,14 +28,15 @@ class DatalistType extends AbstractType
         return TextType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([
             'class',
         ]);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder->addModelTransformer(new EntityToPropertyTransformer($this->entityManager, $this->security, $options['class']));
     }
 
@@ -45,12 +46,12 @@ class DatalistType extends AbstractType
         $view->vars['compound'] = false;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'datalist';
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'datalist';
     }
